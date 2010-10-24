@@ -9,7 +9,7 @@ module RightResource
     def initialize(format=nil)
       @api_version = VERSION
       @api = "https://my.rightscale.com/api/acct/"
-      @format = format || "xml"
+      @format = format || RightResource::Formats::XmlFormat
     end
 
     def login(params={})
@@ -31,9 +31,9 @@ module RightResource
       if /(.xml|.js)/ =~ path
         path = URI.encode(path)
       elsif /\?(.*)$/ =~ path
-        path = URI.encode("#{path}&format=#{@format}")
+        path = URI.encode("#{path}&format=#{@format.extension}")
       else
-        path = URI.encode("#{path}?format=#{@format}")
+        path = URI.encode("#{path}?format=#{@format.extension}")
       end
       unless method.match(/(get|put|post|delete)/)
         raise "Invalid Action: get|put|post|delete only"
@@ -44,12 +44,6 @@ module RightResource
       @headers = @response.headers ||= {}
       @resource_id = @headers[:location].match(/\d+$/) unless @headers[:location].nil?
       @response.body
-
-#      if @format == "xml"
-#        @response.body
-#      else
-#        JSON.parse(@response.body)
-#      end
     rescue => e
       STDERR.puts e.message
     end

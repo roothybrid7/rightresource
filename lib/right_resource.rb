@@ -12,6 +12,7 @@ require 'right_resource/base'
 require 'right_resource/deployment'
 require 'right_resource/server'
 require 'right_resource/server_array'
+require 'right_resource/formats'
 
 module RightResource
   VERSION = '1.0'

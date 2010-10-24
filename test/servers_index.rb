@@ -19,6 +19,7 @@ p c1.inspect
 c2 = RightResource::Connection.new(format = "js")
 p c2.inspect
 #c1.login(login_params)
+c1.login(login_params)
 c2.login(login_params)
 p c2.inspect
 #res = c2.get("servers")

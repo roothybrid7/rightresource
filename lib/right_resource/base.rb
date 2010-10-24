@@ -51,11 +51,11 @@ module RightResource
       end
 
       def format=(type)
-        @format = type.to_s.sub("json", "js")
+        @format = type
       end
 
       def format
-        @format || "js"
+        @format || RightResource::Formats::JsonFormat
       end
 
 #      def connection(refresh=false)
@@ -82,13 +82,13 @@ module RightResource
       end
 
       def index(params={})
-        path = "#{resource_name}s.#{format}#{query_string(params)}"
-        instantiate_collection(JSON.parse(connection.get(path || [])))
+        path = "#{resource_name}s.#{format.extension}#{query_string(params)}"
+        instantiate_collection(format.decode(connection.get(path || [])))
       end
 
       def show(id, params={})
-        path = "#{resource_name}s/#{id}.#{format}#{query_string(params)}"
-        instantiate_record(JSON.parse(connection.get(path)))
+        path = "#{resource_name}s/#{id}.#{format.extension}#{query_string(params)}"
+        instantiate_record(format.decode(connection.get(path)))
       end
 
       def resource_name
@@ -142,12 +142,14 @@ module RightResource
     end
     attr_reader :attributes, :resource_name, :headers, :resource_id, :id
     def generate_attributes(attributes)
+      raise ArgumentError, "expected an attributes Hash, got #{attributes.inspect}" unless attributes.is_a?(Hash)
       attrs = {}
       attributes.each_pair {|key,value| attrs[key.gsub('-', '_').to_sym] = value}
       attrs
     end
 
     def load_accessor(attributes)
+      raise ArgumentError, "expected an attributes Hash, got #{attributes.inspect}" unless attributes.is_a?(Hash)
       attributes.each_pair do |key, value|
         instance_variable_set('@' + key.to_s, value)
         eval("def #{key.to_s}; @#{key.to_s} end")
