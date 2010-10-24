@@ -1,8 +1,14 @@
-require 'rubygems'
-require 'rest_client'
 require 'uri'
 require 'rexml/document'
-require 'json/pure'
+
+begin
+  require 'rubygems'
+  require 'json/pure'
+  require 'rest_client'
+  require 'crack'
+rescue LoadError => e
+  STDERR::puts e.message
+end
 
 $:.unshift(File.dirname(__FILE__))
 require 'right_resource/connection'
