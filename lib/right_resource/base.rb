@@ -136,7 +136,7 @@ module RightResource
       attrs = generate_attributes(attributes)
       if attrs
         @attributes = attrs
-        @id = attrs[:href].match(/\d+$/) if attrs[:href]
+        @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
         load_accessor(attrs)
       end
     end
