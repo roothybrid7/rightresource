@@ -17,5 +17,6 @@ class ServerArray < RightResource::Base
       end
       load_accessor(:active_instances => self.attributes[:active_instances])
     end
+    self
   end
 end
