@@ -32,6 +32,7 @@ Server.set_auth(auth_data["username"], auth_data["password"], auth_data["account
   servers = Server.index
   p servers.size
   servers.each_with_index do |s,i|
+  p s.attributes
   p "BEGIN No: #{i}, Id: #{s.href.match(/\d+$/)} Nickname: #{s.nickname} -----"
     puts "State: #{s.state}"
     p s.attributes

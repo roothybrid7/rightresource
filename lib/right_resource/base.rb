@@ -73,6 +73,14 @@ module RightResource
         end
       end
 
+      def headers
+        @connection.headers || {}
+      end
+
+      def resource_id
+        @connection.resource_id || nil
+      end
+
       def index(params={})
         path = "#{resource_name}s.#{format}#{query_string(params)}"
         instantiate_collection(JSON.parse(connection.get(path || [])))
@@ -121,23 +129,56 @@ module RightResource
     end
 
     def initialize(attributes={})
-      attrs = {}
-      attributes.each_pair {|key,value| attrs[key.to_sym] = value}
-      @attributes = attrs
-      @id = attributes["href"].match(/\d+$/) if attributes["href"]
-      if attributes
-        attributes.each_pair do |key, value|
-          instance_variable_set('@' + key, value)
-          eval("def #{key}; @#{key} end")
-          eval("def #{key}=(#{key}); @#{key} = #{key} end") 
-        end
+      @resource_name = self.class.resource_name
+      @headers = self.class.headers || {}
+      @resource_id = self.class.resource_id || nil
+      # sub-resource4json's key name contains '-'
+      attrs = generate_attributes(attributes)
+      if attrs
+        @attributes = attrs
+        @id = attrs[:href].match(/\d+$/) if attrs[:href]
+        load_accessor(attrs)
       end
     end
-    attr_reader :attributes
+    attr_reader :attributes, :resource_name, :headers, :resource_id, :id
+    def generate_attributes(attributes)
+      attrs = {}
+      attributes.each_pair {|key,value| attrs[key.gsub('-', '_').to_sym] = value}
+      attrs
+    end
+
+    def load_accessor(attributes)
+      attributes.each_pair do |key, value|
+        instance_variable_set('@' + key.to_s, value)
+        eval("def #{key.to_s}; @#{key.to_s} end")
+        eval("def #{key.to_s}=(#{key.to_s}); @#{key.to_s} = #{key.to_s} end")
+      end
+    end
+
+    protected
+      def connection
+        self.class.connection
+      end
   end
 end
 
 class Deployment < RightResource::Base; end
-class Server < RightResource::Base; end
+
+class Server < RightResource::Base
+  class << self
+    def settings(id, params={})
+      path = "#{resource_name}s/#{id}/#{__method__.to_s}.#{format}#{query_string(params)}"
+      instantiate_record(JSON.parse(connection.get(path)))
+    end
+  end
+
+  def settings
+    path = "#{@resource_name}s/#{@id}/#{__method__.to_s}.#{self.class.format}"
+    sub_attrs = generate_attributes(JSON.parse(connection.get(path)))
+    self.attributes.merge! sub_attrs
+    load_accessor(sub_attrs)
+  end
+end
+
 class Statuses < RightResource::Base; end
 class AlertSpec < RightResource::Base; end

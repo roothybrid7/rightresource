@@ -9,7 +9,7 @@ module RightResource
     def initialize(format=nil)
       @api_version = VERSION
       @api = "https://my.rightscale.com/api/acct/"
-      @format = format ||= "xml"
+      @format = format || "xml"
     end
 
     def login(params={})
