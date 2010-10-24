@@ -1,12 +1,5 @@
 #!/usr/bin/env ruby
-
-require 'rubygems'
-require 'yaml'
-require 'json/pure'
-
-$LOAD_PATH << File::expand_path(File::dirname(__FILE__))
-
-require "right_connection.rb"
+# Author:: Satoshi Ohki <roothybrid7@gmail.com>
 
 module RightResource
   class Base

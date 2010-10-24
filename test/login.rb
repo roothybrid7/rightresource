@@ -7,8 +7,7 @@ require 'json/pure'
 $LOAD_PATH << File::expand_path(File::dirname(__FILE__) + "/../")
 p $LOAD_PATH
 
-require "lib/right_connection.rb"
-require "lib/right_base.rb"
+require "lib/right_resource.rb"
 
 puts "BEGIN OF SCRIPT"
 auth_data = open(File::expand_path(File::dirname(__FILE__)) + "/api_auth.yml") {|f| YAML.load(f)}
@@ -22,13 +21,13 @@ auth_data = open(File::expand_path(File::dirname(__FILE__)) + "/api_auth.yml") {
 #Server.account = auth_data["account"]
 Server.set_auth(auth_data["username"], auth_data["password"], auth_data["account"])
 servers = Server.index
-p servers.size
+p servers
 servers = nil
 servers = Server.index
-p servers.size
+p servers
 servers = nil
 servers = Server.index
-p servers.size
+p servers
 exit 0
 
 # Entry point

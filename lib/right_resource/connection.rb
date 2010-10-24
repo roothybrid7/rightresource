@@ -1,11 +1,5 @@
 #!/usr/bin/env ruby
-# @author Satoshi Ohki
-
-require 'rubygems'
-require 'uri'
-require 'rexml/document'
-require 'rest_client'
-require 'json/pure'
+# Author:: Satoshi Ohki <roothybrid7@gmail.com>
 
 module RightResource
   class Connection
@@ -13,7 +7,7 @@ module RightResource
     attr_reader :headers, :resource_id
 
     def initialize(format=nil)
-      @api_version = "1.0"
+      @api_version = VERSION
       @api = "https://my.rightscale.com/api/acct/"
       @format = format ||= "xml"
     end
