@@ -7,8 +7,9 @@ require 'rexml/document'
 require 'json/pure'
 
 $:.unshift(File.dirname(__FILE__))
-require 'right_resource/base'
 require 'right_resource/connection'
+require 'right_resource/base'
+require 'right_resource/server'
 
 module RightResource
   VERSION = '1.0'
