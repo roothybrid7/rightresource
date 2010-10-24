@@ -9,8 +9,9 @@ require 'json/pure'
 $:.unshift(File.dirname(__FILE__))
 require 'right_resource/connection'
 require 'right_resource/base'
-require 'right_resource/server'
 require 'right_resource/deployment'
+require 'right_resource/server'
+require 'right_resource/server_array'
 
 module RightResource
   VERSION = '1.0'
