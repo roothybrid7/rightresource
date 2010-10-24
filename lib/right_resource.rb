@@ -13,6 +13,5 @@ require 'right_resource/server_array'
 require 'right_resource/formats'
 
 module RightResource
-  VERSION = "0.1.0"
   API_VERSION = "1.0"
 end
