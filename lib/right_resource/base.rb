@@ -1,6 +1,3 @@
-#!/usr/bin/env ruby
-# Author:: Satoshi Ohki <roothybrid7@gmail.com>
-
 module RightResource
   class Base
   #class Server

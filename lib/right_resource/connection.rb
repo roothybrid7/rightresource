@@ -1,13 +1,10 @@
-#!/usr/bin/env ruby
-# Author:: Satoshi Ohki <roothybrid7@gmail.com>
-
 module RightResource
   class Connection
     attr_accessor :api_version, :log, :api, :format, :username, :password, :account
     attr_reader :headers, :resource_id
 
     def initialize(format=nil)
-      @api_version = VERSION
+      @api_version = API_VERSION
       @api = "https://my.rightscale.com/api/acct/"
       @format = format || RightResource::Formats::XmlFormat
     end

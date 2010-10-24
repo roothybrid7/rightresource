@@ -1,6 +1,3 @@
-#!/usr/bin/env ruby
-# Author:: Satoshi Ohki <roothybrid7@gmail.com>
-
 class Server < RightResource::Base
   class << self
     def settings(id, params={})

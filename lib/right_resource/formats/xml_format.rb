@@ -1,6 +1,3 @@
-#!/usr/bin/env ruby
-# Author:: Satoshi Ohki <roothybrid7@gmail.com>
-
 require 'crack/xml'
 
 module RightResource

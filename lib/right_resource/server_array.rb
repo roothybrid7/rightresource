@@ -1,6 +1,3 @@
-#!/usr/bin/env ruby
-# Author:: Satoshi Ohki <roothybrid7@gmail.com>
-
 class ServerArray < RightResource::Base
   class << self
     def instances(id, params={})
