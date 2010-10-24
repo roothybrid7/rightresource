@@ -11,7 +11,7 @@ spec = Gem::Specification.new do |s|
   s.requirements << 'none'
   s.require_path = 'lib'
   s.autorequire = 'rake'
-  s.files = FileList['CHANGELOG', 'README', 'LICENSE', 'lib/*.rb']
+  s.files = FileList['CHANGELOG', 'README', 'LICENSE', 'lib/**/*.rb']
   s.description = <<EOF
 RightScale Resource API wrapper.
 EOF
