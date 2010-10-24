@@ -11,24 +11,20 @@ require "lib/right_resource.rb"
 
 puts "BEGIN OF SCRIPT"
 auth_data = open(File::expand_path(File::dirname(__FILE__)) + "/api_auth.yml") {|f| YAML.load(f)}
-# convert key.type: String2Symbol
-#$login_params = {}
-#auth_data.each_pair {|key,value| $login_params[key.to_sym] = value}
-#p $login_params.inspect
 
 #Server.user = auth_data["username"]
 #Server.password = auth_data["password"]
 #Server.account = auth_data["account"]
 Server.set_auth(auth_data["username"], auth_data["password"], auth_data["account"])
-servers = Server.index
-p servers
-servers = nil
-servers = Server.index
-p servers
-servers = nil
-servers = Server.index
-p servers
-exit 0
+#servers = Server.index
+#p servers
+#servers = nil
+#servers = Server.index
+#p servers
+#servers = nil
+#servers = Server.index
+#p servers
+#exit 0
 
 # Entry point
 3.times do
@@ -41,6 +37,7 @@ exit 0
     p s.attributes
   p "--------------------- END"
   end
+  puts "GGGOOOOOOOOOOOOOOOOOOOOOOOD!!!!!L"
 end
 
 puts "END OF SCRIPT"
