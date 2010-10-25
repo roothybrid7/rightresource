@@ -1,0 +1,5 @@
+commit d57e3180e9d86604c08b3a2cf4b0cb925f2c7b1d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 15:45:29 2010 +0900
+
+    bug fix: centos5.4 older ruby version unsupported method
