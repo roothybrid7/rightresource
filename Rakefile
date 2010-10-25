@@ -7,7 +7,7 @@ spec = Gem::Specification.new do |s|
   s.name = 'rightresource'
   s.author = 'Satoshi Ohki'
   s.email = ["roothybrid7", "gmail.com"].join('@')
-  s.version = "0.1.0"
+  s.version = "0.1.1"
   s.requirements << 'none'
   s.require_path = 'lib'
   s.autorequire = 'rake'

@@ -89,15 +89,13 @@ module RightResource
       end
 
       def resource_name
-        index = 0
         name = ""
-        self.name.split(/::/).last.to_s.each_char do |c|
-          if /[A-Z]/ =~ c && index > 0
-            name << "_#{c.downcase}"
+        self.name.to_s.split(/::/).last.scan(/([A-Z][^A-Z]*)/).flatten.each_with_index do |str,i|
+          if i > 0
+            name << "_#{str.downcase}"
           else
-            name << c.downcase
+            name << str.downcase
           end
-          index += 1
         end
         name
       end
