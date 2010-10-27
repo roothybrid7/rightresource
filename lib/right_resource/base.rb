@@ -52,7 +52,7 @@ module RightResource
       end
 
       def format
-        @format || RightResource::Formats::JsonFormat
+        @format ||= RightResource::Formats::JsonFormat
       end
 
 #      def connection(refresh=false)
