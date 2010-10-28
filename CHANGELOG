@@ -15,3 +15,4 @@ Author: Satoshi Ohki <roothybrid7@gmail.com>
 Date:   Mon Oct 25 15:45:29 2010 +0900
 
     bug fix: centos5.4 older ruby version unsupported method
+
