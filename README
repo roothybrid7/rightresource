@@ -5,4 +5,4 @@ Require packages
     rest_client
     crack
 
-install: sudo gem install json rest_client crack
+install: sudo gem install json rest-client crack

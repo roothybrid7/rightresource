@@ -1,6 +1,5 @@
 module RightResource
   class Base
-  #class Server
     class << self
       def set_auth(user, password, account=nil)
         self.user = user
@@ -83,9 +82,22 @@ module RightResource
         instantiate_collection(format.decode(connection.get(path || [])))
       end
 
-      def show(id, params={})
-        path = "#{resource_name}s/#{id}.#{format.extension}#{query_string(params)}"
+      def show(id, prefix={}, params={})
+        path = element_path(id, prefix, params)
         instantiate_record(format.decode(connection.get(path)))
+      end
+
+      def destory(id)
+        path = "#{resource_name}s/#{id}.#{format.extension}"
+        connection.delete(path)
+      end
+
+      def element_path(id, prefix_options = {}, query_options = nil)
+        "#{resource_name}s/#{id.to_s}#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
+      end
+
+      def collection_path(prefix_options = {}, query_options = nil)
+        "#{resource_name}s#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
       end
 
       def resource_name
@@ -98,6 +110,20 @@ module RightResource
           end
         end
         name
+      end
+
+      def prefix(options={})
+        default = ""
+        unless options.nil? || options.empty?
+          options.each do |key,value|
+            if value.nil? || value.empty?
+              default << "/#{key.to_s}"
+            else
+              default << "/#{key.to_s}/#{value}"
+            end
+          end
+        end
+        default
       end
 
       def query_string(options)
@@ -152,9 +178,22 @@ module RightResource
       end
     end
 
+    def destory
+      path = "#{@resource_name}s/#{@id}.#{format.extension}"
+      connection.delete(path)
+    end
+
     protected
       def connection
         self.class.connection
+      end
+
+      def element_path(prefix_options={}, query_options={})
+        self.class.element_path(@id, prefix_options, query_options)
+      end
+
+      def collection_path(prefix_options={}, query_options={})
+        self.class.element_path(prefix_options, query_options)
       end
   end
 end
