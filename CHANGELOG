@@ -1,3 +1,9 @@
+commit d849c4772e4a66fff45a794d84832bcfab97cb50
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Oct 28 16:09:42 2010 +0900
+
+    modified: resource action methods support, add: new resource support
+
 commit 57bc0d37597cee69f30ddba0bc064cb4f4075d49
 Author: Satoshi Ohki <roothybrid7@gmail.com>
 Date:   Wed Oct 27 17:47:30 2010 +0900
