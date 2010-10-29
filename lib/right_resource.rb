@@ -18,6 +18,8 @@ require 'right_resource/formats'
 require 'right_resource/login'
 # Management API
 require 'right_resource/deployment'
+#require 'right_resource/status'
+require 'right_resource/alert_spec'
 require 'right_resource/server'
 require 'right_resource/ec2_ebs_volume'
 require 'right_resource/ec2_elastic_ip'
