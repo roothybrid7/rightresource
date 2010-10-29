@@ -11,10 +11,11 @@ rescue LoadError => e
 end
 
 $:.unshift(File.dirname(__FILE__))
-# Like Active Resource
 require 'right_resource/connection'
 require 'right_resource/base'
 require 'right_resource/formats'
+# Login API
+require 'right_resource/login'
 # Management API
 require 'right_resource/deployment'
 require 'right_resource/server'
