@@ -1,8 +1,8 @@
 require 'uri'
 require 'rexml/document'
+require 'rubygems'
 
 begin
-  require 'rubygems'
   require 'json/pure'
   require 'rest_client'
   require 'crack'
