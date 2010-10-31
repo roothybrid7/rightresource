@@ -2,20 +2,16 @@ require 'uri'
 require 'rexml/document'
 require 'rubygems'
 
-begin
-  require 'json/pure'
-  require 'rest_client'
-  require 'crack'
-rescue LoadError => e
-  STDERR::puts e.message
-end
+require 'json/pure'
+require 'rest_client'
+require 'crack'
 
 $:.unshift(File.dirname(__FILE__))
 require 'right_resource/connection'
 require 'right_resource/base'
 require 'right_resource/formats'
 # Login API
-require 'right_resource/login'
+#require 'right_resource/login'
 # Management API
 require 'right_resource/deployment'
 #require 'right_resource/status'
