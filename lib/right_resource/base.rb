@@ -160,6 +160,7 @@ module RightResource
         @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
         load_accessor(attrs)
       end
+      yield self if block_given?
     end
     attr_reader :attributes, :resource_name, :headers, :resource_id, :id
     def generate_attributes(attributes)
