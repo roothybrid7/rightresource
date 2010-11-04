@@ -11,10 +11,13 @@ rescue LoadError => e
 end
 
 $:.unshift(File.dirname(__FILE__))
+# Ruby core extensions
+require 'right_resource/core_ext'
 # Like Active Resource
 require 'right_resource/connection'
 require 'right_resource/base'
 require 'right_resource/formats'
+
 # Management API
 require 'right_resource/deployment'
 require 'right_resource/server'
