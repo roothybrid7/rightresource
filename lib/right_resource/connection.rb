@@ -6,7 +6,8 @@ module RightResource
     def initialize(format=nil)
       @api_version = API_VERSION
       @api = "https://my.rightscale.com/api/acct/"
-      @format = format || RightResource::Formats::XmlFormat
+      @format = format || RightResource::Formats::JsonFormat
+      yield self if block_given?
     end
 
     def login(params={})
@@ -20,7 +21,7 @@ module RightResource
     end
 
     def login?
-      @api_object.nil? ? false : true
+      @api_object ? true : false
     end
 
     def send(path, method="get", headers={})
@@ -43,6 +44,10 @@ module RightResource
       @response.body
     rescue => e
       STDERR.puts e.message
+    end
+
+    def clear
+      @response = @headers = @resource_id = nil
     end
 
     # HTTP methods

@@ -1,74 +1,23 @@
 module RightResource
   class Base
     class << self
-      def set_auth(user, password, account=nil)
-        self.user = user
-        self.password = password
-        self.account = account unless account.nil?
+      def connection=(conn)
+        @connection = conn
       end
 
-      def user
-        if defined?(@user)
-          @user
-        elsif superclass != Object && superclass.user
-          superclass.user.dup.freeze
-        end
-      end
-
-      def user=(user)
-        @connection = nil
-        @user = user
-      end
-
-      def password
-        if defined?(@password)
-          @password
-        elsif superclass != Object && superclass.password
-          superclass.password.dup.freeze
-        end
-      end
-
-      def password=(password)
-        @connection = nil
-        @password = password
-      end
-
-      def account
-        if defined?(@account)
-          @account
-        elsif superclass != Object && superclass.account
-          superclass.account.dup.freeze
-        end
-      end
-
-      def account=(account)
-        @connection = nil
-        @account = account
-      end
-
-      def format=(type)
-        @format = type
-      end
-
-      def format
-        @format ||= RightResource::Formats::JsonFormat
-      end
-
-#      def connection(refresh=false)
       def connection
         if defined?(@connection) || superclass == Object
-          @connection = Connection.new
-          @connection.format = format
-          @connection.username = user if user
-          @connection.password = password if password
-          @connection.account = account if account
-          @connection.login()
+          raise ArgumentError, "Not set connection object!!" unless @connection
+          @connection.clear
           @connection
         else
           superclass.connection
         end
       end
 
+      def format
+        @connection.format || RightResource::Formats::JsonFormat
+      end
       def headers
         @connection.headers || {}
       end
@@ -85,6 +34,12 @@ module RightResource
       def show(id, prefix={}, params={})
         path = element_path(id, prefix, params)
         instantiate_record(format.decode(connection.get(path)))
+      end
+
+      def create(params={})
+      end
+
+      def update(id, params={})
       end
 
       def destory(id)
@@ -160,6 +115,7 @@ module RightResource
         @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
         load_accessor(attrs)
       end
+      yield self if block_given?
     end
     attr_reader :attributes, :resource_name, :headers, :resource_id, :id
     def generate_attributes(attributes)

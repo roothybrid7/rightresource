@@ -7,11 +7,12 @@ require 'rest_client'
 require 'crack'
 
 $:.unshift(File.dirname(__FILE__))
+# Ruby core extensions
+require 'right_resource/core_ext'
+# base class
 require 'right_resource/connection'
 require 'right_resource/base'
 require 'right_resource/formats'
-# Login API
-#require 'right_resource/login'
 # Management API
 require 'right_resource/deployment'
 #require 'right_resource/status'
