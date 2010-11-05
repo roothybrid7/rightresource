@@ -1,6 +1,6 @@
 module RightResource
   class Connection
-    attr_accessor :api_version, :log, :api, :format, :username, :password, :account
+    attr_accessor :api_version, :log, :api, :format, :username, :password, :account, :logger
     attr_reader :headers, :resource_id
 
     def initialize(format=nil)

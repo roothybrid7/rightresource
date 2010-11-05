@@ -26,20 +26,41 @@ module RightResource
         @connection.resource_id || nil
       end
 
+      # examples:
+      # Server.index(:filter => "nickname=testserver")
+      # Deployment.index(:filter => "nickname=staging")
+      # ServerArray.index()
       def index(params={})
         path = "#{resource_name}s.#{format.extension}#{query_string(params)}"
         instantiate_collection(format.decode(connection.get(path || [])))
       end
 
+      # examples:
+      # server_id = 1
+      # Server.show(server_id)
+      #
+      # Deployment.show(1, :server_settings => "true")
+      # ServerArray.show(1)
       def show(id, prefix={}, params={})
         path = element_path(id, prefix, params)
         instantiate_record(format.decode(connection.get(path)))
       end
 
+      # examples:
+      # params = {:nickname => "dev", :deployment => "dev test", :default_ec2_availability_zone => "ap-northeast-1a"}
       def create(params={})
+        #TODO: refactor
+        self.new(params).tap do |resource|
+          resource.save
+        end
+#        path = collection_path
+#        connection.post(path, params)
       end
 
       def update(id, params={})
+        #TODO: refactor
+        path = element_path(id)
+        connection.put(path, params)
       end
 
       def destory(id)
@@ -112,12 +133,18 @@ module RightResource
       attrs = generate_attributes(attributes)
       if attrs
         @attributes = attrs
-        @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
+        if @resource_id.nil?
+          @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
+        else
+          @id = @resource_id
+        end
         load_accessor(attrs)
       end
       yield self if block_given?
     end
-    attr_reader :attributes, :resource_name, :headers, :resource_id, :id
+    attr_accessor :id
+    attr_reader :attributes, :resource_name, :headers, :resource_id
+
     def generate_attributes(attributes)
       raise ArgumentError, "expected an attributes Hash, got #{attributes.inspect}" unless attributes.is_a?(Hash)
       attrs = {}
@@ -134,14 +161,38 @@ module RightResource
       end
     end
 
+    def new?
+      id.nil?
+    end
+    alias :new_record? :new?
+
+    def save
+      new? ? create : update
+    end
+
     def destory
-      path = "#{@resource_name}s/#{@id}.#{format.extension}"
-      connection.delete(path)
+      connection.delete(element_path)
     end
 
     protected
       def connection
         self.class.connection
+      end
+
+      def update
+        attrs = self.attributes
+        connection.put(element_path(prefix_options), encode, self.class.headers).tap do |response|
+          load_attributes_from_response(response)
+        end
+      end
+
+      def create
+        headers = self.class.headers.each_pair do |key, value|
+        end
+        connection.post(collection_path, self.class.headers).tap do |response|
+          self.id = id_from_response(response)
+          load_attributes_from_response(response)
+        end
       end
 
       def element_path(prefix_options={}, query_options={})
