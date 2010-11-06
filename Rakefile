@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'rake/gempackagetask'
+require 'rake/rdoctask'
 
-spec = Gem::Specification.new do |s|
+#task :default => ['rdoc', 'package']
+gem_spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = "RightResource: RightScale Resource API wrapper"
   s.name = 'rightresource'
@@ -17,7 +19,14 @@ RightScale Resource API wrapper.
 EOF
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
+Rake::GemPackageTask.new(gem_spec) do |pkg|
   pkg.need_zip = true
   pkg.need_tar = true
+end
+
+Rake::RDocTask.new(:rdoc) do |doc|
+  doc.rdoc_files.include('README', 'lib/**/*.rb')
+  doc.main = "README"
+  doc.title = "RightResource API documentation"
+  doc.rdoc_dir = "rdoc"
 end
