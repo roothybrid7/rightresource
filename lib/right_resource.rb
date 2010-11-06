@@ -36,5 +36,5 @@ require 'right_resource/macro'
 require 'right_resource/credential'
 
 module RightResource
-  API_VERSION = "1.0"
+  API_VERSION = "1.0".freeze
 end
