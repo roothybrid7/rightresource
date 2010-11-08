@@ -11,11 +11,11 @@ gem_spec = Gem::Specification.new do |s|
   s.name = 'rightresource'
   s.author = 'Satoshi Ohki'
   s.email = ['roothybrid7', 'gmail.com'].join('@')
-  s.version = '0.1.4'
+  s.version = '0.1.5'
   s.homepage = 'https://github.com/satsv/rightresource'
   s.requirements << 'none'
   s.require_path = 'lib'
-  s.files = FileList['CHANGELOG', 'README', 'LICENSE', 'lib/**/*.rb']
+  s.files = FileList['CHANGELOG', 'README.rdoc', 'LICENSE', 'lib/**/*.rb']
   s.add_dependency('json')
   s.add_dependency('rest_client')
   s.add_dependency('crack')
@@ -30,8 +30,8 @@ Rake::GemPackageTask.new(gem_spec) do |pkg|
 end
 
 Rake::RDocTask.new(:rdoc) do |doc|
-  doc.rdoc_files.include('README', 'lib/**/*.rb')
-  doc.main = 'README'
+  doc.rdoc_files.include('README.rdoc', 'lib/**/*.rb')
+  doc.main = 'README.rdoc'
   doc.title = 'RightResource API documentation'
   doc.rdoc_dir = 'rdoc'
   doc.template = 'direct'

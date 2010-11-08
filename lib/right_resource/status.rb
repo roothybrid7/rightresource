@@ -17,10 +17,6 @@ class Status < RightResource::Base
     end
   end
 
-  def index(id)
-    raise NotImplementedError
-  end
-
   def create
     raise NotImplementedError
   end

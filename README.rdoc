@@ -1,8 +1,16 @@
-RightScale Resource API wrapper
+= RightScale Resource API wrapper
 
-Require packages
+== Lisence
+Author::    Satoshi Ohki <_roothybrid7_@_gmail.com_>
+Copyright:: Copyright (c) 2010 Satoshi Ohki
+License::   The MIT License
+
+== Require packages
     json
     rest_client
     crack
 
-install: sudo gem install json rest-client crack
+== install
+    sudo gem install json rest-client crack
+
+== example

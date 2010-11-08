@@ -1,53 +1,133 @@
 module RightResource
   class Base
-    class << self
+    class << self # Define singleton methods
+      def logger=(logger)
+        @logger = logger
+      end
+
+      def logger
+        @logger ||= Logger.new(STDERR)
+      end
+
+      # Set RESTFul client with login authentication for HTTP Methods(Low level)
+      # === Examples
+      #   conn = Connection.new do |c|
+      #     c.login(:username => "user", :password => "pass", :account => "1")
+      #   end
+      #   Server.connection = conn
       def connection=(conn)
         @connection = conn
       end
 
+      # Get RESTFul client for HTTP Methods(Low level)
+      # and use in resource api call
+      # === Examples
+      #   conn = Server.connection
+      #   conn.get("servers?filter=nickname=server1")
+      #
+      # ex. resource api call:
+      #   Server.index
       def connection
         if defined?(@connection) || superclass == Object
           raise ArgumentError, "Not set connection object!!" unless @connection
-          @connection.clear
           @connection
         else
           superclass.connection
         end
       end
 
+      # Get request and response format type object
       def format
-        @connection.format || RightResource::Formats::JsonFormat
+        connection.format || RightResource::Formats::JsonFormat
       end
+
+      # Get response headers via RESTFul client
       def headers
-        @connection.headers || {}
+        connection.headers || {}
       end
 
+      # Get response status code
+      def status
+        connection.status || nil
+      end
+
+      # Get resource id in response location header via RESTFul client(create only?)
       def resource_id
-        @connection.resource_id || nil
+        connection.resource_id || nil
       end
 
-      # examples:
-      # Server.index(:filter => "nickname=testserver")
-      # Deployment.index(:filter => "nickname=staging")
-      # ServerArray.index()
-      def index(params={})
-        path = "#{resource_name}s.#{format.extension}#{query_string(params)}"
-        instantiate_collection(format.decode(connection.get(path || [])))
-      end
-
-      # examples:
-      # server_id = 1
-      # Server.show(server_id)
+      # Get resources by index method
+      # same resources support criteria like filtering.
       #
-      # Deployment.show(1, :server_settings => "true")
-      # ServerArray.show(1)
-      def show(id, prefix={}, params={})
-        path = element_path(id, prefix, params)
-        instantiate_record(format.decode(connection.get(path)))
+      # === Params
+      # params:: criteria[ex. :filter => "nickname=hoge"](Hash)
+      # === Return
+      # Resource list(Array)
+      #
+      # === Examples
+      #   dep = Deployment.index(:filter => ["nickname=payment-dev", "nickname=payment-staging"])
+      #
+      #   test = Server.index(:filter => "nickname<>test")
+      #
+      # Criteria unsupport
+      #     array = ServerArray.index
+      #
+      # Get first 5 resources
+      #     server = Server.index.first(5) # see Array class
+      # Get last resource
+      #     server = Server.index.last # see Array class
+      #
+      # Get all operational server's nickname
+      #     Server.index.each do |server|
+      #       puts server.nickname if server.state = "operational"
+      #     end
+      def index(params = {})
+        path = "#{resource_name}s.#{format.extension}#{query_string(params)}"
+        connection.clear
+        instantiate_collection(format.decode(connection.get(path || [])))
+      rescue RestClient::ResourceNotFound
+        nil
+      rescue => e
+        logger.error("#{e.class}: #{e.pretty_inspect}")
+        logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+      ensure
+        logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
       end
 
-      # examples:
-      # params = {:nickname => "dev", :deployment => "dev test", :default_ec2_availability_zone => "ap-northeast-1a"}
+      # Get resource
+      # === Params
+      # params:: Query Strings(Hash)
+      # === Return
+      # Resource(Object)
+      #
+      # === Example
+      #   server_id = 1
+      #   Server.show(server_id) #=> #<Server:0x1234...>
+      #
+      # Get deployment resource with server's subresource
+      #     Deployment.show(1, :params => {:server_settings => "true"}) #=> #<Deployment:0x12314...>
+      def show(id, params = {})
+        path = element_path(id, nil, params)
+        connection.clear
+        instantiate_record(format.decode(connection.get(path)))
+      rescue RestClient::ResourceNotFound
+        nil
+      rescue => e
+        logger.error("#{e.class}: #{e.pretty_inspect}")
+        logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+      ensure
+        logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
+      end
+
+      # Create new resource
+      # Example:
+      #   params = {
+      #     :nickname => "dev",
+      #     :deployment_href => "https://my.rightscale.com/api/acct/22329/deployments/59855",
+      #     :server_template_href => "https://my.rightscale.com/api/acct/22329/server_templates/76610",
+      #     :ec2_availability_zone => "ap-northeast-1a"
+      #   }
+      #   Server.create(params)
       def create(params={})
         #TODO: refactor
         self.new(params).tap do |resource|
@@ -57,25 +137,35 @@ module RightResource
 #        connection.post(path, params)
       end
 
+      # Update resource
       def update(id, params={})
         #TODO: refactor
         path = element_path(id)
         connection.put(path, params)
       end
 
+      # Delete resource
+      # Example:
+      #   Server.destory(1)
+      #
+      #   server = Server.index(:filter => "aws_id=i-012345")
+      #   Server.destory(server.id)
       def destory(id)
-        path = "#{resource_name}s/#{id}.#{format.extension}"
+        path = element_path(id)
         connection.delete(path)
       end
 
-      def element_path(id, prefix_options = {}, query_options = nil)
-        "#{resource_name}s/#{id.to_s}#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
+      # Get single resource
+      def element_path(id, prefix_options = nil, query_options = nil)
+        "#{resource_name}s/#{id}#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
       end
 
-      def collection_path(prefix_options = {}, query_options = nil)
+      # Get resource collections
+      def collection_path(prefix_options = nil, query_options = nil)
         "#{resource_name}s#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
       end
 
+      # Get resource name(equals plural of classname)
       def resource_name
         name = ""
         self.name.to_s.split(/::/).last.scan(/([A-Z][^A-Z]*)/).flatten.each_with_index do |str,i|
@@ -88,76 +178,90 @@ module RightResource
         name
       end
 
-      def prefix(options={})
-        default = ""
-        unless options.nil? || options.empty?
-          options.each do |key,value|
-            if value.nil? || value.empty?
-              default << "/#{key.to_s}"
+      def generate_attributes(attributes)
+        raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
+        attrs = {}
+        attributes.each_pair {|key,value| attrs[key.to_s.gsub('-', '_').to_sym] = value}
+        attrs
+      end
+
+      protected
+        def prefix(options = nil)
+          default = ""
+          unless options.nil?
+            if options.is_a?(String) || options.is_a?(Symbol)
+              default = "/#{options}"
+            elsif options.is_a?(Hash)
+                  options.each_pair do |key,value|
+                    if value.nil? || value.empty?
+                      default << "/#{key}"
+                    else
+                      default << "/#{key}/#{value}"
+                    end
+                  end
             else
-              default << "/#{key.to_s}/#{value}"
+              raise ArgumentError, "expected an Hash, String or Symbol, got #{options.pretty_inspect}"
             end
           end
+          default
         end
-        default
-      end
 
-      def query_string(options)
-        query = ""
-        unless options.nil? || options.empty?
-          options.each do |key,value|
-            if query.empty? 
-              query << "?#{key.to_s}=#{value}"
-            else
-              query << "&#{key.to_s}=#{value}"
-            end
-          end
+        # create querystring by crack to_params method
+        def query_string(options = {})
+          !options.is_a?(Hash) || options.empty? ? "" : '?' + options.to_params
         end
-        query
-      end
 
-      def instantiate_collection(collection)
-        collection.collect! {|record| instantiate_record(record)}
-      end
+        # Get resource collection
+        def instantiate_collection(collection)
+          collection.collect! {|record| instantiate_record(record)}
+        end
 
-      def instantiate_record(record)
-        self.new(record)
-      end
+        # Get a resource and create object
+        def instantiate_record(record)
+          self.new(record)
+        end
     end
 
     def initialize(attributes={})
-      @resource_name = self.class.resource_name
-      @headers = self.class.headers || {}
-      @resource_id = self.class.resource_id || nil
       # sub-resource4json's key name contains '-'
-      attrs = generate_attributes(attributes)
-      if attrs
-        @attributes = attrs
-        if @resource_id.nil?
-          @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
+#      attrs = generate_attributes(attributes)
+      @attributes = {}
+      loads(attributes)
+      if @attributes
+        if self.class.resource_id.nil?
+          @id = @attributes[:href].match(/\d+$/).to_s if @attributes[:href]
         else
-          @id = @resource_id
+          @id = self.class.resource_id
         end
-        load_accessor(attrs)
+        load_accessor(@attributes)
       end
       yield self if block_given?
     end
     attr_accessor :id
-    attr_reader :attributes, :resource_name, :headers, :resource_id
+    attr_reader :attributes
 
-    def generate_attributes(attributes)
-      raise ArgumentError, "expected an attributes Hash, got #{attributes.inspect}" unless attributes.is_a?(Hash)
-      attrs = {}
-      attributes.each_pair {|key,value| attrs[key.gsub('-', '_').to_sym] = value}
-      attrs
+    def loads(attributes)
+      raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
+      attributes.each_pair {|key,value| @attributes[key.to_s.gsub('-', '_').to_sym] = value}
+      self
+    end
+
+    def update_attributes(attributes)
+      loads(attributes) && load_accessor(attributes) && save
     end
 
     def load_accessor(attributes)
-      raise ArgumentError, "expected an attributes Hash, got #{attributes.inspect}" unless attributes.is_a?(Hash)
+      raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
       attributes.each_pair do |key, value|
-        instance_variable_set('@' + key.to_s, value)
-        eval("def #{key.to_s}; @#{key.to_s} end")
-        eval("def #{key.to_s}=(#{key.to_s}); @#{key.to_s} = #{key.to_s} end")
+        instance_variable_set("@#{key}", value) # Initialize instance variables
+        self.class.class_eval do
+          define_method("#{key}=") do |new_value| # ex. obj.key = new_value
+            instance_variable_set("@#{key}", new_value)
+          end
+          define_method(key) do
+            instance_variable_get("@#{key}")
+          end
+        end
       end
     end
 
@@ -180,27 +284,28 @@ module RightResource
       end
 
       def update
-        attrs = self.attributes
-        connection.put(element_path(prefix_options), encode, self.class.headers).tap do |response|
-          load_attributes_from_response(response)
-        end
+        pair = URI.decode({resource_name.to_sym => self.attributes}.to_params).split('&').map {|l| l.split('=')}
+        headers = Hash[*pair.flatten]
+        connection.put(element_path, headers)
       end
 
       def create
-        headers = self.class.headers.each_pair do |key, value|
-        end
-        connection.post(collection_path, self.class.headers).tap do |response|
-          self.id = id_from_response(response)
-          load_attributes_from_response(response)
-        end
+        pair = URI.decode({resource_name.to_sym => self.attributes}.to_params).split('&').map {|l| l.split('=')}
+        headers = Hash[*pair.flatten]
+        connection.post(collection_path, headers)
+        self.id = self.class.resource_id
       end
 
-      def element_path(prefix_options={}, query_options={})
-        self.class.element_path(@id, prefix_options, query_options)
+      def resource_name
+        self.class.resource_name
       end
 
-      def collection_path(prefix_options={}, query_options={})
-        self.class.element_path(prefix_options, query_options)
+      def element_path(prefix_options=nil, query_options=nil)
+        self.class.element_path(self.id, prefix_options, query_options)
+      end
+
+      def collection_path(prefix_options=nil, query_options=nil)
+        self.class.collection_path(prefix_options, query_options)
       end
   end
 end

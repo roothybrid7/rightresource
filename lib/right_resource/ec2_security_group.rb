@@ -8,12 +8,4 @@ class Ec2SecurityGroup < RightResource::Base
       raise NotImplementedError
     end
   end
-
-  def index
-    raise NotImplementedError
-  end
-
-  def update
-    raise NotImplementedError
-  end
 end

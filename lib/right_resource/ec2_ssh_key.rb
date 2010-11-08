@@ -4,8 +4,4 @@ class Ec2SshKey < RightResource::Base
       raise NotImplementedError
     end
   end
-
-  def index
-    raise NotImplementedError
-  end
 end
