@@ -1,14 +1,21 @@
 class Server < RightResource::Base
   class << self
+    #TODO: refactor define_method or method_missing
     def action; end
+    # server start(Starting created instance)
+    # === Examples
+    #   server_id = Server.index(:filter => "nickname=dev001").first.id
+    #   Server.start(server_id)
     def start(id)
       connection.post(element_path(id, :start))
     end
 
+    # server stop(Starting created instance)
     def stop(id)
       connection.post(element_path(id, :stop))
     end
 
+    # server restart(Starting created instance)
     def reboot(id)
       connection.post(element_path(id, :reboot))
     end

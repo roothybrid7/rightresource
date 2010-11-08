@@ -1,7 +1,6 @@
 module RightResource
   class Connection
     @reraise = false
-    RestClient.log = STDERR
 
     attr_accessor :api_version, :log, :api, :format, :username, :password, :account, :reraise
     attr_reader :headers, :resource_id, :response, :status
@@ -12,9 +11,15 @@ module RightResource
       @api = "https://my.rightscale.com/api/acct/"
       @format = params[:format] || RightResource::Formats::JsonFormat
       @logger = params[:logger] || Logger.new(STDERR)
+      RestClient.log = STDERR if @logger.level == Logger::DEBUG # HTTP request/response log
       yield self if block_given?  # RightResource::Connection.new {|conn| ...}
     end
 
+    # RestClient authentication
+    # === Examples
+    #   params = {:username => "foo", :password => "bar", :account => "1"}
+    #   conn = Connection.new
+    #   conn.login(params)
     def login(params={})
       @username = params[:username] unless params[:username].nil? || params[:username].empty?
       @password = params[:password] unless params[:password].nil? || params[:password].empty?
@@ -32,6 +37,7 @@ module RightResource
       @api_object ? true : false
     end
 
+    # Send HTTP Request
     def request(path, method="get", headers={})
       raise "Not Login!!" unless self.login?
 #      if /(.xml|.js)/ =~ path
@@ -79,6 +85,8 @@ module RightResource
 
     # update
     def put(path, headers={})
+puts path.pretty_inspect
+puts headers.pretty_inspect
       self.request(path, "put", headers)
     end
 

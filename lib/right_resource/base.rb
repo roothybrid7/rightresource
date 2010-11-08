@@ -1,6 +1,11 @@
 module RightResource
   class Base
     class << self # Define singleton methods
+      # Set Logger object
+      # === Examples
+      #   logger = Logger.new(STDERR)
+      #   logger.level = Logger::WARN [Default: Logger::DEBUG]
+      #   Server.logger = logger
       def logger=(logger)
         @logger = logger
       end
@@ -81,6 +86,9 @@ module RightResource
       #     Server.index.each do |server|
       #       puts server.nickname if server.state = "operational"
       #     end
+      #
+      # Get EC2 Security Groups(aws ap = 4)
+      #   sec_grps = Ec2SecurityGroup.index(:cloud_id => "4")
       def index(params = {})
         path = "#{resource_name}s.#{format.extension}#{query_string(params)}"
         connection.clear
@@ -237,8 +245,7 @@ module RightResource
       end
       yield self if block_given?
     end
-    attr_accessor :id
-    attr_reader :attributes
+    attr_accessor :id, :attributes
 
     def loads(attributes)
       raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
@@ -295,11 +302,9 @@ module RightResource
       def create
         #TODO: refactor hard coding
         attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
-puts attrs.pretty_inspect
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         headers = Hash[*pair.flatten]
         headers["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
-puts headers.pretty_inspect
         connection.post(collection_path, headers)
         self.id = self.class.resource_id
       end
