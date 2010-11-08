@@ -16,8 +16,12 @@ gem_spec = Gem::Specification.new do |s|
   s.requirements << 'none'
   s.require_path = 'lib'
   s.files = FileList['CHANGELOG', 'README.rdoc', 'LICENSE', 'lib/**/*.rb']
+  s.has_rdoc = true
+  s.rdoc_options << '--title' << 'RightResource API documentation' <<
+    '--main' << 'README.rdoc' << '--rdoc_dir' << 'rdoc' << '--template' << 'direct'
+  s.extra_rdoc_files = ['README.rdoc']
   s.add_dependency('json')
-  s.add_dependency('rest_client')
+  s.add_dependency('rest-client')
   s.add_dependency('crack')
   s.description = <<EOF
 RightScale Resource API wrapper.
