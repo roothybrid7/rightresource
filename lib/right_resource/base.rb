@@ -284,14 +284,22 @@ module RightResource
       end
 
       def update
-        pair = URI.decode({resource_name.to_sym => self.attributes}.to_params).split('&').map {|l| l.split('=')}
+        #TODO: refactor hard coding
+        attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
+        pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         headers = Hash[*pair.flatten]
+        headers["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
         connection.put(element_path, headers)
       end
 
       def create
-        pair = URI.decode({resource_name.to_sym => self.attributes}.to_params).split('&').map {|l| l.split('=')}
+        #TODO: refactor hard coding
+        attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
+puts attrs.pretty_inspect
+        pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         headers = Hash[*pair.flatten]
+        headers["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
+puts headers.pretty_inspect
         connection.post(collection_path, headers)
         self.id = self.class.resource_id
       end
