@@ -20,7 +20,7 @@ gem_spec = Gem::Specification.new do |s|
   s.name = 'rightresource'
   s.author = 'Satoshi Ohki'
   s.email = ['roothybrid7', 'gmail.com'].join('@')
-  s.version = '0.2.3'
+  s.version = '0.2.4'
   s.homepage = 'https://github.com/satsv/rightresource'
   s.requirements << 'none'
   s.require_path = 'lib'

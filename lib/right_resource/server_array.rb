@@ -14,7 +14,9 @@ class ServerArray < RightResource::Base
 
     def instances(id)
       path = element_path(id, :instances)
-      generate_attributes(format.decode(connection.get(path)))
+      result = format.decode(connection.get(path)).map do |instance|
+        generate_attributes(instance)
+      end
     end
   end
 end
