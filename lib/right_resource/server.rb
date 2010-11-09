@@ -36,9 +36,7 @@ class Server < RightResource::Base
 
     def settings(id)
       path = element_path(id, :settings)
-      result = format.decode(connection.get(path)).map do |instance|
-        generate_attributes(instance)
-      end
+      generate_attributes(format.decode(connection.get(path)))
     end
   end
 end
