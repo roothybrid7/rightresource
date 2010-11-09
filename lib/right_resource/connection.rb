@@ -2,7 +2,7 @@ module RightResource
   class Connection
     @reraise = false
 
-    attr_accessor :api_version, :log, :api, :format, :username, :password, :account, :reraise
+    attr_accessor :api_version, :log, :api, :format, :username, :password, :account, :reraise, :logger
     attr_reader :headers, :resource_id, :response, :status
 
     # Set RestFul Client Parameters
@@ -10,7 +10,7 @@ module RightResource
       @api_version = API_VERSION
       @api = "https://my.rightscale.com/api/acct/"
       @format = params[:format] || RightResource::Formats::JsonFormat
-      @logger = params[:logger] || Logger.new(STDERR)
+      @logger = params[:logger] || Logger.new(STDERR).tap {|l| l.level = Logger::WARN}
       RestClient.log = STDERR if @logger.level == Logger::DEBUG # HTTP request/response log
       yield self if block_given?  # RightResource::Connection.new {|conn| ...}
     end
@@ -66,6 +66,7 @@ module RightResource
       @logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
     end
 
+    # Resource clear
     def clear
       @response = @headers = @resource_id = @status = nil
     ensure
@@ -85,8 +86,6 @@ module RightResource
 
     # update
     def put(path, headers={})
-puts path.pretty_inspect
-puts headers.pretty_inspect
       self.request(path, "put", headers)
     end
 

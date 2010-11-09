@@ -11,7 +11,7 @@ module RightResource
       end
 
       def logger
-        @logger ||= Logger.new(STDERR)
+        @logger ||= Logger.new(STDERR).tap {|l| l.level = Logger::WARN}
       end
 
       # Set RESTFul client with login authentication for HTTP Methods(Low level)
