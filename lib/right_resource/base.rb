@@ -12,7 +12,6 @@ module RightResource
 
       def logger
         if defined?(@logger) || superclass == Object
-          raise ArgumentError, "Not set connection object!!" unless @logger
           @logger ||= Logger.new(STDERR).tap {|l| l.level = Logger::WARN}
         else
           superclass.logger
@@ -54,21 +53,14 @@ module RightResource
       # Sets the format that attributes are sent and received in from a mime type reference:
       #
       # === Examples
-      #   Server.format = :json
-      #   Server.show(1) # => GET /api/acct/1/servers/1.json
-      #
       #   Server.format = RightResource::Formats::JsonFormat
       #   Server.show(1) # => GET /api/acct/1/servers/1.json
       #
-      #   RightResource::Base.format = :json
+      #   RightResource::Base.format = RightResource::Formats::JsonFormat
       #   Server.index # => GET /api/acct/1/servers.json
       #   Ec2EbsVolume.index # => GET /api/acct/1/ec2_ebs_volumes.json
-      #
-      # Default format is <tt>:json</tt>.
       def format=(mime_type_reference_or_format)
-        format = mime_type_reference_or_format.is_a?(Symbol) ?
-          RightResource::Formats[mime_type_reference_or_format] : mime_type_reference_or_format
-        connection.format = format
+        connection.format = mime_type_reference_or_format
       end
 
       # Get request and response format type object
