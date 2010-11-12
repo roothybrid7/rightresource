@@ -20,7 +20,7 @@ module RightResource
 
       # Set RESTFul client with login authentication for HTTP Methods(Low level)
       # === Examples
-      #   conn = Connection.new do |c|
+      #   conn = RightResource::Connection.new do |c|
       #     c.login(:username => "user", :password => "pass", :account => "1")
       #   end
       #   Deployment.connection = conn
@@ -150,14 +150,30 @@ module RightResource
       end
 
       # Create new resource
-      # Example:
+      # ==== Parameters
+      #
+      # * +params+ - see Examples
+      #
+      # === Examples
       #   params = {
-      #     :nickname => "dev",
-      #     :deployment_href => "https://my.rightscale.com/api/acct/22329/deployments/59855",
-      #     :server_template_href => "https://my.rightscale.com/api/acct/22329/server_templates/76610",
-      #     :ec2_availability_zone => "ap-northeast-1a"
+      #     :cloud_id => 4, # {1 = us-east; 2 = eu; 3 = us-west, 4 = ap}
+      #     :ec2_image_href => "https://my.rightscale.com/api/acct/22329/multi_cloud_images/40840", # AMI image or MultiCloud image
+      #     :nickname =>"dev703", # Instance rightscale nickname
+      #     :instance_type => 'm1.xlarge',
+      #     :assoicate_eip_at_launch => '0',
+      #     :deployment_href => "https://my.rightscale.com/api/acct/22329/deployments/63387",
+      #     :ec2_availability_zone=>"ap-southeast-1b",  # (ex: 'us-east-1a', 'any')
+      #     :ec2_ssh_key_href => "https://my.rightscale.com/api/acct/22329/ec2_ssh_keys/240662",
+      #     :ec2_security_group =>
+      #       ["https://my.rightscale.com/api/acct/22329/ec2_security_groups/170342",
+      #       "https://my.rightscale.com/api/acct/22329/ec2_security_groups/170344",
+      #       "https://my.rightscale.com/api/acct/22329/ec2_security_groups/170353"],
+      #     :server_template_href => "https://my.rightscale.com/api/acct/22329/ec2_server_templates/82665"  # rightscale servertemplate
       #   }
-      #   Server.create(params)
+      #   server_id = Server.create(params).id
+      #   settings = Server.settings(server_id)
+      #   p settings
+      #
       def create(params={})
         #TODO: refactor
         self.new(params).tap do |resource|
