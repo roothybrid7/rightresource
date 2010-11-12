@@ -38,5 +38,13 @@ class Server < RightResource::Base
       path = element_path(id, :settings)
       generate_attributes(format.decode(connection.get(path)))
     end
+
+    def tags(resource_href)
+      query_options={'resource_href'=>resource_href}
+      path = "tags/search.#{format.extension}#{query_string(query_options)}"
+      Hash[ *format.decode(connection.get( path )).collect { |tag|
+        tag['name'].split('=')
+      }.flatten ]
+    end
   end
 end
