@@ -203,12 +203,12 @@ module RightResource
 
       # Get single resource
       def element_path(id, prefix_options = nil, query_options = nil)
-        "#{resource_name}s/#{id}#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
+        "#{resource_name}s/#{id}#{prefix(prefix_options)}#{query_string(query_options)}"
       end
 
       # Get resource collections
       def collection_path(prefix_options = nil, query_options = nil)
-        "#{resource_name}s#{prefix(prefix_options)}.#{format.extension}#{query_string(query_options)}"
+        "#{resource_name}s#{prefix(prefix_options)}#{query_string(query_options)}"
       end
 
       # Get resource name(equals plural of classname)
@@ -249,7 +249,7 @@ module RightResource
               raise ArgumentError, "expected an Hash, String or Symbol, got #{options.pretty_inspect}"
             end
           end
-          default
+          "#{default}.#{format.extension}"
         end
 
         # create querystring by crack to_params method
@@ -332,18 +332,18 @@ module RightResource
         #TODO: refactor hard coding
         attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
-        headers = Hash[*pair.flatten]
-        headers["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
-        connection.put(element_path, headers)
+        h = Hash[*pair.flatten]
+        h["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
+        connection.put(element_path, h)
       end
 
       def create
         #TODO: refactor hard coding
         attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
-        headers = Hash[*pair.flatten]
-        headers["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
-        connection.post(collection_path, headers)
+        h= Hash[*pair.flatten]
+        h["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
+        connection.post(collection_path, h)
         self.id = self.class.resource_id
       end
 
