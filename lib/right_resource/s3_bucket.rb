@@ -4,8 +4,4 @@ class S3Bucket < RightResource::Base
       raise NotImplementedError
     end
   end
-
-  def update
-    raise NotImplementedError
-  end
 end
