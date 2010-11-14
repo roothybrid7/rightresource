@@ -1,15 +1,13 @@
 class Deployment < RightResource::Base
   class << self
-    def start_all(id)
-      connection.post(element_path(id, :start_all))
-    end
-
-    def stop_all(id)
-      connection.post(element_path(id, :stop_all))
-    end
-
-    def duplicate(id)
-      connection.post(element_path(id, :duplicate))
+    # deployment actions (start_all, stop_all, duplicate)
+    # ==== Parameters
+    # * +id+ - RightScale deployment resource id(https://my.rightscale.com/deployments/{id})
+    [:start_all, :stop_all, :duplicate].each do |act_method|
+      define_method(act_method) do |id|
+        path = element_path(id, act_method).sub(/\.#{format.extension}$/, '')
+        action(:post, path)
+      end
     end
   end
 end

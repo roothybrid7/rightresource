@@ -1,21 +1,5 @@
 class Server < RightResource::Base
   class << self
-    def action(method, path, params={})
-      case method
-      when :get
-        connection.get(path, params)
-      when :post
-        connection.post(path, params)
-      end
-    rescue RestClient::ResourceNotFound
-      nil
-    rescue => e
-      logger.error("#{e.class}: #{e.pretty_inspect}")
-      logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
-    ensure
-      logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
-    end
-
     # server actions (start, stop, restart)
     # ==== Parameters
     # * +id+ - RightScale server resource id(https://my.rightscale.com/servers/{id})
@@ -31,7 +15,12 @@ class Server < RightResource::Base
     end
 
     # === Parameters
-    # * +params+ -  (ex. https://my.rightscale.com/right_scripts/{id})
+    # * +params+ - Hash, resource parameters (ex. https://my.rightscale.com/right_scripts/{id})
+    #
+    # === Examples
+    #   server_id = 1
+    #   params = {:ec2_ebs_volume_href => "https://my.rightscale.com/api/acct/##/ec2_ebs_volumes/1", :device => "/dev/sdj"}
+    #   Server.attach_volume(server_id, params) # => 204 No Content
     [:run_script, :attach_volume].each do |act_method|
       define_method(act_method) do |id,params|
         elems = params.reject {|key,value| key == :right_script}  # select server resource params
@@ -43,7 +32,10 @@ class Server < RightResource::Base
       end
     end
 
-    # ===Examples
+    # Get sampleing data
+    # === Return
+    #   Hash (keys # => [:cf, :start, :vars, :lag_time, :end, :data :avg_lag_time])
+    # === Examples
     #   server_id = 848422
     #   params = {:start => -180, :end => -20, :plugin_name => "cpu-0", :plugin_type => "cpu-idle"}
     #   Server.get_sketchy_data(server_id, params)
@@ -52,16 +44,24 @@ class Server < RightResource::Base
       generate_attributes(format.decode(action(:get, path)))
     end
 
+    # Get URL of Server monitoring graph
+    # === Examples
+    #   * General Graph
+    #     Server.monitoring(1)
+    #
+    #   * Custumize Graph
+    #     server_id = 1
+    #     params = {:graph_name => "cpu-0/cpu-idle", :size => "small", :period => "day", :title => "MyCpuGraph", :tz => "JST"}
+    #     Server.monitoring(server_id, params)
     def monitoring(id, params={})
-      raise NotImplementedError
-#      if params[:graph_name]
-#        prefix_options = params[:graph_name]
-#        params.delete(:graph_name)
-#        path = element_path(id, {:monitoring => prefix_options}, params)
-#      else
-#        path = element_path(id, :monitoring, params)
-#      end
-#      generate_attributes(format.decode(action(:get, path)))
+      if params[:graph_name]
+        prefix_options = params[:graph_name]
+        params.delete(:graph_name)
+        path = element_path(id, :monitoring => prefix_options)
+      else
+        path = element_path(id, :monitoring)
+      end
+      generate_attributes(format.decode(action(:get, path, params)))
     end
 
     # Get Server settings(Subresource)
@@ -73,9 +73,27 @@ class Server < RightResource::Base
       generate_attributes(format.decode(action(:get, path)))
     end
 
+    # Get status of any running jobs after calling to the servers resource to run_script
+    # === Parameters
+    # * +resource_ref+ - Hash[:id] or Hash[:href](execute run_script method response location header)
+    #                   (ex. Location: https://my.rightscale.com/api/acct/##/statuses/{id})
+    # === Examples
+    #   server_id = 1
+    #   right_script_id = 1
+    #   Server.run_script(server_id, :right_script => right_script_id)
+    #   # => 201 Created, location: https://my.rightscale.com/api/acct/##/statuses/12345
+    #
+    #   Server.statuses(:id => Server.resource_id) if Server.status == 201
+    #   or
+    #   Server.statuses(:href => Server.headers[:location]) if Server.status == 201
+    def statuses(resource_ref)
+      path = element_path(id, :get_sketchy_data, params)
+      generate_attributes(format.decode(action(:get, path)))
+    end
+
     # Get Server tags(server or ec2_current_instance)
     # === Parameters
-    #   +resource_href+ - server.href or server.ec2_current_href
+    # * +resource_href+ - server.href or server.ec2_current_href
     # === Examples
     #   server = Server.show(1)
     #   tags = Server.tags(server.ec2_current_href)

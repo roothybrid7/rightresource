@@ -83,6 +83,27 @@ module RightResource
         connection.resource_id || nil
       end
 
+      # RestFul Method
+      def action(method, path, params={})
+        case method
+        when :get
+          connection.get(path, params)
+        when :post
+          connection.post(path, params)
+        when :put
+          connection.put(path, params)
+        when :delete
+          connection.delete(path, params)
+        end
+      rescue RestClient::ResourceNotFound
+        nil
+      rescue => e
+        logger.error("#{e.class}: #{e.pretty_inspect}")
+        logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+      ensure
+        logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
+      end
+
       # Get resources by index method
       # same resources support criteria like filtering.
       #
