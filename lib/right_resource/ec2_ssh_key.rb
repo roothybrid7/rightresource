@@ -1,7 +1,5 @@
 class Ec2SshKey < RightResource::Base
   class << self
-    def index(id)
-      raise NotImplementedError
-    end
+    undef :index
   end
 end

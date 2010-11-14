@@ -19,7 +19,7 @@ class ServerArray < RightResource::Base
     #          "success"=>[{"ec2_instance_href"=>"https://my.rightscale.com/api/acct/##/ec2_instances/1367"}]}}
     def terminate_all(id)
       path = element_path(id, :terminate_all)
-      generate_attributes(format.decode(action(:post, path)))
+      format.decode(action(:post, path)).generate_attributes
     end
 
     # Run script on all
@@ -36,7 +36,7 @@ class ServerArray < RightResource::Base
     def instances(id)
       path = element_path(id, :instances)
       result = format.decode(action(:get, path)).map do |instance|
-        generate_attributes(instance)
+        instance.generate_attributes
       end
     end
   end

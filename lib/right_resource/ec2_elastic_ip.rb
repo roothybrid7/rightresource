@@ -1,7 +1,6 @@
 class Ec2ElasticIp < RightResource::Base
   class << self
-    def update(id)
-      raise NotImplementedError
-    end
+    undef :update
   end
+  undef :update
 end

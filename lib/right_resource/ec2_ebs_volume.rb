@@ -1,3 +1,5 @@
+# == alias_method
+# * _attach_to_server_ - component_ec2_ebs_volumes
 class Ec2EbsVolume < RightResource::Base
   class << self
     # Eb2Volume attach to server

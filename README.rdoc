@@ -10,7 +10,4 @@ License::   The MIT License
     rest_client
     crack
 
-== install
-    sudo gem install json rest-client crack
-
 == example

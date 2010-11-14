@@ -1,12 +1,28 @@
+# == define_methods 1
+# Server Action
+# * _start_
+# * _stop_
+# * _restart_
+#
+# === Parameters
+# * _id_ - RightScale server resource id(https://my.rightscale.com/servers/{id})
+# === Examples
+#   server_id = Server.index(:filter => "nickname=dev001").first.id
+#   Server.start(server_id)
+#
+# == define_methods 2
+# Server and other resource action
+# * _run_script_
+# * _attach_volume_
+# === Parameters
+# * _id_ - RightScale server resource id(https://my.rightscale.com/servers/{id})
+# * _params_ - Hash(ex. :right_script, :ec2_ebs_volume_href, :device)
+# === Examples
+#   server_id = 1
+#   params = {:ec2_ebs_volume_href => "https://my.rightscale.com/api/acct/##/ec2_ebs_volumes/1", :device => "/dev/sdj"}
+#   Server.attach_volume(server_id, params) # => 204 No Content
 class Server < RightResource::Base
   class << self
-    # server actions (start, stop, restart)
-    # ==== Parameters
-    # * +id+ - RightScale server resource id(https://my.rightscale.com/servers/{id})
-    #
-    # === Examples
-    #   server_id = Server.index(:filter => "nickname=dev001").first.id
-    #   Server.start(server_id)
     [:start, :stop, :reboot].each do |act_method|
       define_method(act_method) do |id|
         path = element_path(id, act_method).sub(/\.#{format.extension}$/, '')
@@ -14,13 +30,6 @@ class Server < RightResource::Base
       end
     end
 
-    # === Parameters
-    # * +params+ - Hash, resource parameters (ex. https://my.rightscale.com/right_scripts/{id})
-    #
-    # === Examples
-    #   server_id = 1
-    #   params = {:ec2_ebs_volume_href => "https://my.rightscale.com/api/acct/##/ec2_ebs_volumes/1", :device => "/dev/sdj"}
-    #   Server.attach_volume(server_id, params) # => 204 No Content
     [:run_script, :attach_volume].each do |act_method|
       define_method(act_method) do |id,params|
         elems = params.reject {|key,value| key == :right_script}  # select server resource params
@@ -41,7 +50,7 @@ class Server < RightResource::Base
     #   Server.get_sketchy_data(server_id, params)
     def get_sketchy_data(id, params)
       path = element_path(id, :get_sketchy_data, params)
-      generate_attributes(format.decode(action(:get, path)))
+      format.decode(action(:get, path)).generate_attributes
     end
 
     # Get URL of Server monitoring graph
@@ -61,7 +70,7 @@ class Server < RightResource::Base
       else
         path = element_path(id, :monitoring)
       end
-      generate_attributes(format.decode(action(:get, path, params)))
+      format.decode(action(:get, path, params)).generate_attributes
     end
 
     # Get Server settings(Subresource)
@@ -70,7 +79,7 @@ class Server < RightResource::Base
     #   settings = Server.settings(server_id)
     def settings(id)
       path = element_path(id, :settings)
-      generate_attributes(format.decode(action(:get, path)))
+      format.decode(action(:get, path)).generate_attributes
     end
 
     # Get status of any running jobs after calling to the servers resource to run_script
@@ -88,7 +97,7 @@ class Server < RightResource::Base
     #   Server.statuses(:href => Server.headers[:location]) if Server.status == 201
     def statuses(resource_ref)
       path = element_path(id, :get_sketchy_data, params)
-      generate_attributes(format.decode(action(:get, path)))
+      format.decode(action(:get, path)).generate_attributes
     end
 
     # Get Server tags(server or ec2_current_instance)

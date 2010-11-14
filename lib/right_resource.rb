@@ -27,7 +27,7 @@ require 'right_resource/ec2_ssh_key'
 require 'right_resource/server_array'
 require 'right_resource/ec2_ebs_snapshot'
 require 'right_resource/s3_bucket'
-#require 'right_resource/tag'
+require 'right_resource/tag'
 # Design API
 require 'right_resource/server_template'
 require 'right_resource/right_script'

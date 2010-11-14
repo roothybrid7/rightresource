@@ -308,7 +308,7 @@ module RightResource
 
     def loads(attributes)
       raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
-      attributes.each_pair {|key,value| @attributes[key.to_s.gsub('-', '_').to_sym] = value}
+      @attributes = attributes.generate_attributes
       self
     end
 
