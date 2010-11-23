@@ -1,0 +1,4 @@
+# columns
+# :parameters: (Update only)
+nickname:   #Nickname of the Elastic IP (mandatory)
+cloud_id:   #The cloud or cloud region identifier  (1 = us-east; 2 = eu; 3 = us-west, 4 = ap)(mandatory), default[us-east].

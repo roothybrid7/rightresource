@@ -1,0 +1,15 @@
+# columns
+# :parameters: (Update only)
+#   Hash: :parameters => {"RS_INPUT_VARIABLES" => "type:value"}
+#   "type:value": type = ["text","cred","key","env"]
+#   e.g. :parameters => {:LB_APPLISTENER_NAME => text:www, :DEBUG => "ignore:$ignore"}
+# => [["nickname","can't be blank"]]
+name:             #Nickname of the server
+#name: :wq#Nickname of the server
+file:             #File used for the alert specification
+variable:         #Variable used for the alert specification
+condition:        #Condition to use for a comparison to the threshold
+threshold:        #Threshold before the alert escalates
+escalation_name:  #Name of the escalation
+duration:         #Duration in minutes
+description:      #Description of the alert specification

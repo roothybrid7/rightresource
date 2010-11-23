@@ -1,5 +1,7 @@
 module RightResource
   class Base
+    @@non_rs_params = [:cloud_id,]  # Non RightScale parameters(ex. ec2 api request parameters)
+
     class << self # Define singleton methods
       # Set Logger object
       # === Examples
@@ -74,8 +76,8 @@ module RightResource
       end
 
       # Get response status code
-      def status
-        connection.status || nil
+      def status_code
+        connection.status_code || nil
       end
 
       # Get resource id in response location header via RESTFul client(create only?)
@@ -95,11 +97,10 @@ module RightResource
         when :delete
           connection.delete(path, params)
         end
-      rescue RestClient::ResourceNotFound
-        nil
       rescue => e
         logger.error("#{e.class}: #{e.pretty_inspect}")
         logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+        nil
       ensure
         logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
       end
@@ -135,12 +136,15 @@ module RightResource
       def index(params = {})
         path = "#{resource_name}s.#{format.extension}#{query_string(params)}"
         connection.clear
-        instantiate_collection(format.decode(connection.get(path || [])))
-      rescue RestClient::ResourceNotFound
-        nil
+        result = format.decode(connection.get(path || [])).map do |resource|
+          correct_attributes(resource)
+          resource
+        end
+        instantiate_collection(result)
       rescue => e
         logger.error("#{e.class}: #{e.pretty_inspect}")
         logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+        []
       ensure
         logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
       end
@@ -160,12 +164,16 @@ module RightResource
       def show(id, params = {})
         path = element_path(id, nil, params)
         connection.clear
-        instantiate_record(format.decode(connection.get(path)))
-      rescue RestClient::ResourceNotFound
-        nil
+        result = format.decode(connection.get(path)).tap do |resource|
+          correct_attributes(resource)
+          resource[:id] = resource[:href].match(/[0-9]+$/).to_s.to_i
+          resource
+        end
+        instantiate_record(result)
       rescue => e
         logger.error("#{e.class}: #{e.pretty_inspect}")
         logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+        nil
       ensure
         logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
       end
@@ -178,38 +186,35 @@ module RightResource
       # === Examples
       #   params = {
       #     :cloud_id => 4, # {1 = us-east; 2 = eu; 3 = us-west, 4 = ap}
-      #     :ec2_image_href => "https://my.rightscale.com/api/acct/22329/multi_cloud_images/40840", # AMI image or MultiCloud image
+      #     :ec2_image_href => "https://my.rightscale.com/api/acct/###/multi_cloud_images/40840", # AMI image or MultiCloud image
       #     :nickname =>"dev703", # Instance rightscale nickname
       #     :instance_type => 'm1.xlarge',
       #     :assoicate_eip_at_launch => '0',
-      #     :deployment_href => "https://my.rightscale.com/api/acct/22329/deployments/63387",
+      #     :deployment_href => "https://my.rightscale.com/api/acct/###/deployments/63387",
       #     :ec2_availability_zone=>"ap-southeast-1b",  # (ex: 'us-east-1a', 'any')
-      #     :ec2_ssh_key_href => "https://my.rightscale.com/api/acct/22329/ec2_ssh_keys/240662",
+      #     :ec2_ssh_key_href => "https://my.rightscale.com/api/acct/###/ec2_ssh_keys/240662",
       #     :ec2_security_group =>
-      #       ["https://my.rightscale.com/api/acct/22329/ec2_security_groups/170342",
-      #       "https://my.rightscale.com/api/acct/22329/ec2_security_groups/170344",
-      #       "https://my.rightscale.com/api/acct/22329/ec2_security_groups/170353"],
-      #     :server_template_href => "https://my.rightscale.com/api/acct/22329/ec2_server_templates/82665"  # rightscale servertemplate
+      #       ["https://my.rightscale.com/api/acct/###/ec2_security_groups/170342",
+      #       "https://my.rightscale.com/api/acct/###/ec2_security_groups/170344",
+      #       "https://my.rightscale.com/api/acct/###/ec2_security_groups/170353"],
+      #     :server_template_href => "https://my.rightscale.com/api/acct/###/ec2_server_templates/82665"  # rightscale servertemplate
       #   }
       #   server_id = Server.create(params).id
       #   settings = Server.settings(server_id)
       #   p settings
       #
       def create(params={})
-        #TODO: refactor
         self.new(params).tap do |resource|
           resource.save
         end
-#        path = collection_path
-#        connection.post(path, params)
       end
 
       # Update resource
-      def update(id, params={})
-        #TODO: refactor
-        path = element_path(id)
-        connection.put(path, params)
-      end
+#      def update(id, params={})
+#        #TODO: refactor
+#        path = element_path(id)
+#        connection.put(path, params)
+#      end
 
       # Delete resource
       # Example:
@@ -245,11 +250,31 @@ module RightResource
         name
       end
 
-      def generate_attributes(attributes)
-        raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
-        attrs = {}
-        attributes.each_pair {|key,value| attrs[key.to_s.gsub('-', '_').to_sym] = value}
-        attrs
+      # Correct attributes(Correct hash keys recursively)
+      # '-'(dash) is included but not '_'(under score) in AWS Parameter keys.
+      # On the other hand '_'(under score) is included in RightScale Parameter keys
+      # e.g. Hash["ip-address"] -> Hash[:ip_address], Hash["deployment_href"] -> Hash[:deployment_href]
+      def correct_attributes(attributes)
+        return unless attributes.is_a?(Hash)
+
+        attributes.alter_keys
+        attributes.each do |key,value|  # recursive
+          attributes[key] =
+            case value
+            when Array
+              value.map do |attrs|
+                if attrs.is_a?(Hash)
+                  correct_attributes(attrs)
+                else
+                  attrs.dup rescue attrs
+                end
+              end
+            when Hash
+              correct_attributes(value)
+            else
+              value.dup rescue value
+            end
+        end
       end
 
       protected
@@ -289,11 +314,34 @@ module RightResource
         end
     end
 
+    attr_accessor :id, :attributes
+
+    # If no schema has been defined for the class (see
+    # <tt>ActiveResource::schema=</tt>), the default automatic schema is
+    # generated from the current instance's attributes
+    def schema
+    #  self.class.schema || self.attributes
+    end
+
+    # This is a list of known attributes for this resource. Either
+    # gathered from the provided <tt>schema</tt>, or from the attributes
+    # set on this instance after it has been fetched from the remote system.
+    def known_attributes
+    #  self.class.known_attributes + self.attributes.keys.map(&:to_s)
+    end
+
+    # Duplicate resource
+    def dup
+      self.class.new.tap do |resource|
+        resource.attributes = @attributes.reject {|key,value| key == :href}
+        resource.load_accessor(resource.attributes)
+      end
+    end
+
     def initialize(attributes={})
       # sub-resource4json's key name contains '-'
-#      attrs = generate_attributes(attributes)
       @attributes = {}
-      loads(attributes)
+      load_attributes(attributes)
       if @attributes
         if self.class.resource_id.nil?
           @id = @attributes[:href].match(/\d+$/).to_s if @attributes[:href]
@@ -304,16 +352,15 @@ module RightResource
       end
       yield self if block_given?
     end
-    attr_accessor :id, :attributes
 
-    def loads(attributes)
+    def load_attributes(attributes)
       raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
-      @attributes = attributes.generate_attributes
+      @attributes = self.class.correct_attributes(attributes)
       self
     end
 
     def update_attributes(attributes)
-      loads(attributes) && load_accessor(attributes) && save
+      load_attributes(attributes) && load_accessor(attributes) && save
     end
 
     def load_accessor(attributes)
@@ -344,28 +391,48 @@ module RightResource
       connection.delete(element_path)
     end
 
+    # For checking <tt>respond_to?</tt> without searching the attributes (which is faster).
+    alias_method :respond_to_without_attributes?, :respond_to?
+
+    # A method to determine if an object responds to a message (e.g., a method call). In Active Resource, a Person object with a
+    # +name+ attribute can answer <tt>true</tt> to <tt>my_person.respond_to?(:name)</tt>, <tt>my_person.respond_to?(:name=)</tt>, and
+    # <tt>my_person.respond_to?(:name?)</tt>.
+    def respond_to?(method, include_priv = false)
+      method_name = method.to_s
+      if attributes.nil?
+        super
+#      elsif known_attributes.include?(method_name)
+#        true
+      elsif method_name =~ /(?:=|\?)$/ && attributes.include?($`)
+        true
+      else
+        # super must be called at the end of the method, because the inherited respond_to?
+        # would return true for generated readers, even if the attribute wasn't present
+        super
+      end
+    end
+
     protected
       def connection
         self.class.connection
       end
 
       def update
-        #TODO: refactor hard coding
-        attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
+        attrs = self.attributes.reject {|key,value| @@non_rs_params.include?(key.to_sym) || value.nil?}
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         h = Hash[*pair.flatten]
-        h["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
+        @@non_rs_params.each {|key| h[key.to_s] = self.attributes[key] if self.attributes.has_key?(key) && self.attributes[key]}
         connection.put(element_path, h)
       end
 
       def create
-        #TODO: refactor hard coding
-        attrs = self.attributes.reject {|key,value| key.to_s == "cloud_id"}
+        attrs = self.attributes.reject {|key,value| @@non_rs_params.include?(key.to_sym) || value.nil?}
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         h= Hash[*pair.flatten]
-        h["cloud_id"] = self.attributes[:cloud_id] if self.attributes.has_key?(:cloud_id)
+        @@non_rs_params.each {|key| h[key.to_s] = self.attributes[key] if self.attributes.has_key?(key) && self.attributes[key]}
         connection.post(collection_path, h)
         self.id = self.class.resource_id
+        self.href = self.class.headers[:location]
       end
 
       def resource_name
@@ -378,6 +445,25 @@ module RightResource
 
       def collection_path(prefix_options=nil, query_options=nil)
         self.class.collection_path(prefix_options, query_options)
+      end
+
+    private
+      def method_missing(method_symbol, *arguments) #:nodoc:
+        method_name = method_symbol.to_s
+
+        if method_name =~ /(=|\?)$/
+          case $1
+          when "="
+            attributes[$`.to_sym] = arguments.first
+          when "?"
+            attributes[$`.to_sym]
+          end
+        else
+          return attributes[method_symbol] if attributes.include?(method_symbol)
+          # not set right now but we know about it
+#          return nil if known_attributes.include?(method_name)
+          super
+        end
       end
   end
 end

@@ -1,7 +1,32 @@
 require 'rubygems'
+gem 'hoe', '>= 2.1.0'
+require 'fileutils'
+require './lib/right_resource'
+
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 
+#Hoe.plugin :newgem
+# Hoe.plugin :website
+# Hoe.plugin :cucumberfeatures
+
+# Generate all the Rake tasks
+# Run 'rake -T' to see list of generated tasks (from gem root directory)
+#$hoe = Hoe.spec 'right_resource' do
+#  self.developer 'Satoshi Ohki', ['roothybrid7', 'gmail.com'].join('@')
+#  self.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
+#  self.rubyforge_name       = self.name # TODO this is default value
+#  # self.extra_deps         = [['activesupport','>= 2.0.2']]
+#
+#end
+
+require 'newgem/tasks'
+#Dir['tasks/*.rake'].each { |t| load t }
+
+# TODO - want other tests/tasks run by default? Add them to the list
+# remove_task :default
+
+# task :default => [:spec, :features]
 # RDoc parameters
 @rdoc_title = 'RightResource API documentation'
 @rdoc_main = 'README.rdoc'
@@ -20,7 +45,7 @@ gem_spec = Gem::Specification.new do |s|
   s.name = 'rightresource'
   s.author = 'Satoshi Ohki'
   s.email = ['roothybrid7', 'gmail.com'].join('@')
-  s.version = '0.3.0'
+  s.version = '0.3.1'
   s.homepage = 'https://github.com/satsv/rightresource'
   s.requirements << 'none'
   s.require_path = 'lib'

@@ -1,0 +1,10 @@
+# columns
+# :parameters: (Update only)
+create:
+  cloud_id:               #The cloud or cloud region identifier  (1 = us-east; 2 = eu; 3 = us-west, 4 = ap). default[us-east](create only)
+  nickname:               #Nickname of the volume(selective)
+  description:            #Description of the volume
+  ec2_ebs_volume_id:      #id of the volume
+  commit:                 #when set to 'explicit' the db record will have the state as 'uncommitted' and the user has to do another PUT                                req to update the state. If set to 'implicit', the state will be set to 'committed'. default[implicit]
+update:
+  commit_state:           #can be one of 'committed' or 'uncommitted'

@@ -1,0 +1,6 @@
+# For monitoring graph name
+# columns
+size:   #Size of the graph.  (thumb, tiny, small, large, xlarge)
+period: #The time period.  (now, day, yday, week, lweek, month, quarter, year) where 'yday' = yesterday and 'lweek' = last week
+tz:     #The timezone.
+title:  #Descriptive name of the graph.

@@ -1,0 +1,18 @@
+# columns
+# :parameters: (Update only)
+create:
+  cloud_id:           #The cloud or cloud region identifier  (1 = us-east; 2 = eu; 3 = us-west, 4 = ap). default[us-east]
+  aws_description:    #(mandatory)
+  aws_group_name:     #(mandatory)
+update:
+  add_groups:
+    owner:            #Owner account that contains the security group (mandatory)
+    group:            #Name of security group that will be allowed access (mandatory)
+    protocol:         #'tcp', 'udp' or 'icmp'
+    from_port:        #Port range lower bound
+    to_port:          #Port range upper bound
+  add_ips:
+    cidr_ips:         #IP range (e.g. 192.168.0.1/8)
+    protocol:         #'tcp', 'udp' or 'icmp'
+    from_port:        #Port range lower bound
+    to_port:          #Port range upper bound

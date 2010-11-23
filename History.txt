@@ -1,0 +1,270 @@
+=== 0.0.1 2010-11-23
+
+* 1 major enhancement:
+  * Initial release
+
+tag v0.1.2
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Oct 27 18:11:00 2010 +0900
+
+version 0.1.2
+
+commit 31dbd90d8a156cd157889f301ddf0d4f13a3c6da
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Oct 27 18:08:15 2010 +0900
+
+    modified: version up
+
+
+tag v0.1.3
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Oct 28 16:12:36 2010 +0900
+
+resource action methods support
+new resource
+
+commit 3aa0346177961835477556fe49de2a1528c8d907
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Oct 28 16:11:59 2010 +0900
+
+    version up gem: 0.1.3
+
+
+tag v0.1.4
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 5 09:25:59 2010 +0900
+
+refactoring, add core_ext and tap method
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (Darwin)
+
+iQEcBAABAgAGBQJM008XAAoJEFWFhZJ7f/ucQJgH/2Ley6uDGPxDCu2TqVK1EKAE
+djTiyGxyNmtCS0y54aHyFKtQ7wLixL2J0AMsZiBzUj/IF6/KjRX0Y0B2shF8y+YP
+SEzKGWDwq6UMLXBAjNtndDc0oUwI/XZivowc5kBtpSQi+ebmH8s8AXGlMDJ//J2r
+KaLAvUimfk4w5YzkPdmkWzCVlOIqLZwAetXPPc9qg8AaPcyH4L4fQPGU4rH2y/ng
+XM4p+FuErbFrEWEGjIdFaXrgyGO18dLPOF29rxP+NPg/r/XCOr5stYXZYlzP9oq2
+2wHsVLTJKjJ1pqi8vpZRQ3rtHkOrkhhHU1LJY/g0yT77i0MDykU0g57/n8VMe6A=
+=fP8c
+-----END PGP SIGNATURE-----
+
+commit 57bb16f2eb05204451c33bfa7279f91d52b899b2
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 5 09:23:49 2010 +0900
+
+    remove file
+
+ delete mode 100644 lib/right_resource/login.rb
+
+tag v0.1.5
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 09:34:12 2010 +0900
+
+support method: create, update
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (Darwin)
+
+iQEcBAABAgAGBQJM10WEAAoJEFWFhZJ7f/ucMMcH/RZwePsjg7s19HRY3GUDhRzY
+zdr1Hm2Vo+sZ/5zH+LDrYc8x3nkCXl059FsYJaDwXOBubu4R3tv5p5/7emh039QB
+764gotcSXXcPGqkxCZzftou+5rUxuiKZF8aUgRGSDUXGHyhqKL6poQH+81GICwwH
+30yMU4p+In8/YaXHuAUEhKG+ECVzz5ovxPu7XRN+kP1BdMe51cAgz9bLnWY/j3/C
+movPVjjMOVs579CE54DuCEXj4DXu85tZLXTIjUQO51VFhzR3UyTHtrEP281tNOUI
+Ca0IlviKimMIBNNUELXcLBmJ38yA0D5UXZeeypdx7DAXYVKXmRmKAJPqDDROkIk=
+=Mlr5
+-----END PGP SIGNATURE-----
+
+commit 07a8076ca9e7e96a8afb1d78d9bdad9791c3d1e2
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 09:33:01 2010 +0900
+
+    modified: support create, update method and bug fix
+
+
+tag v0.1.6
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 11:49:45 2010 +0900
+
+cloud_id support
+mistake Rakefile
+
+commit 2e01389ef942886ab3fddc4644d419b6d4acc009
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 11:48:02 2010 +0900
+
+    bug fix: gems name mistake
+
+
+tag v0.2.0
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 15:47:38 2010 +0900
+
+update method support
+
+commit 61e1bea412912a3833f8dee9327fd050a9e188b5
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 15:46:18 2010 +0900
+
+    bug fix: method, rdoc commentout
+
+
+tag v0.2.1
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 19:57:10 2010 +0900
+
+bug fix
+
+commit b916804a3dd3e123ba1be9f35d6562d69d6b8c9e
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 19:56:38 2010 +0900
+
+    modified: convert subresources hash key string2symbol
+
+
+tag v0.2.2
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 22:24:12 2010 +0900
+
+verison up
+
+commit 789c239a8df5f385d23eb871b2d739e6ddbb6953
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 22:24:03 2010 +0900
+
+    version up: v0.2.1 -> v0.2.2
+
+
+tag v0.2.3
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 09:39:48 2010 +0900
+
+logger level debug -> warn
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (Darwin)
+
+iQEcBAABAgAGBQJM2JhUAAoJEFWFhZJ7f/ucbX0IAJvYMoABhwisshJUih2E/8lU
+Bwz1ZZplGlfSB85P+ozgKjSRowzdBi524ztTeVrbjddRaBAj0h63DoB7dnPFd6UH
+bzGIM42PjmeE0ccgGPx/8PGtKSWWZ9tyXFFEVuY4fhTriNsJPT03gjspMwLcerYK
+EAdQCAq2JlOWdxd/zfyHd0irpkMSnn966G8FEgNnf328av9jidiP4LJ0K2docF/k
+G3v7oBbRQBES0z7TdOTCnyV/ge390V22L0Ve0IUw/5EV4mIJ3DJZ9BuSu/Eb5PO8
+oN/0JzuGyc8dsHgARHWz/aaP52gU8lKQLvhQTxS6U6LLtoVPOdTrMMyhC2Ds528=
+=TU88
+-----END PGP SIGNATURE-----
+
+commit 8b7698d66db112037c338f0d2eb19fb886e36fbd
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 09:39:05 2010 +0900
+
+    modified: logger level debug -> warn
+
+
+tag v0.2.4
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 21:15:59 2010 +0900
+
+bug fix: api returns
+
+commit 9e2e4fc1932a5b97a237513356f4bbf673a9fe92
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 21:14:44 2010 +0900
+
+    bug fix: mistake expect hash of api returns, collect array
+
+
+tag v0.2.5
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 22:07:18 2010 +0900
+
+bug fix
+
+commit be4cedc3556840f6ec25914b86f7579c3736e668
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 22:06:56 2010 +0900
+
+    bug fix: mistake except api returns array, collect hash
+
+
+tag v0.2.6
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Nov 10 11:43:30 2010 +0900
+
+bug fix, inherit
+
+commit b87729b4595f09914110ebe61e9467502ec51b10
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Nov 10 11:43:01 2010 +0900
+
+    version up
+
+
+tag v0.2.7
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 16:25:06 2010 +0900
+
+version up
+
+commit a33ccde253c9a3c8b03db5f393814b7d75f9888a
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 16:24:47 2010 +0900
+
+    v0.2.6->v0.2.7
+
+
+tag v0.2.8
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 17:40:10 2010 +0900
+
+bug fix
+
+commit d7c446c190dcf8a2d78cf74f56826e845dc7f946
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 17:39:43 2010 +0900
+
+    bug fix: tab, space
+
+
+tag v0.2.9
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 15 01:52:24 2010 +0900
+
+tag resource api support and refacor
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (Darwin)
+
+iQEcBAABAgAGBQJM4BPIAAoJEFWFhZJ7f/ucj9UH/RJefJa084Wvky0XkgnPce/i
+kR9c/CK2YhrMmiVmf1PL3is1vs543Oh7f7YOALX6SPe/T0AUE/JJVjsgKzfoVJt3
+YhOz1ftLuFwHohH6Bm2n5uadTrZdbo0SdoIk6SaWGIDDFm+BJ4LdPLmJuJALF4Aj
+dFWeF9JEf0G/P913KIX8JUFUmUrZgKXkIMAci2UDZicMcyKYtqEuGkfPvKCMblkX
+JB0zlz4q1JnGX0aVn2ZMp37Di6w9zlrRnQ00E6OOs3MVry3o8nv3AnC+FEsb4Pfk
+r/WDJ+ULVKQgNCrl/knSmNrsOZzclY1KvegEJwJp2zgg70E7SKkADoS1LATSu3k=
+=AND4
+-----END PGP SIGNATURE-----
+
+commit b1add55c13950a7f8085f97b9c91216d7a7d07fa
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 15 01:51:48 2010 +0900
+
+    versionup: v0.2.9
+
+
+tag v0.3.0
+Tagger: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 15 02:41:51 2010 +0900
+
+version up
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (Darwin)
+
+iQEcBAABAgAGBQJM4B9fAAoJEFWFhZJ7f/uc4/4H+gJs+uoCeYfcNfo0XaQOzyFJ
+aohtlhncO3svzbNR+kko6Psbp0Ae8jvorOQZdX0wjcXQBVhft1npI3UEpnU21OA/
+/KnuUziVS5Cgi0FAibCHaXwIwSCz6yN55S1v5tjIccI0Fy5D9Y/PaeWNVRtYs7Fv
+7KKsKPTl2MUAe0GONQbK1ze0A3ECWbhup+4VQd+7jmOpRMn4aqiThbm7qlQpBU5/
+Uqj8XGpnNQZcvjrjA4KszTrqd55HjoorB34OuXrfanKwXw/tfoom95QKyuKq8aXV
+ECtHsJzOgibytQwYRr/e3gqg2wEOZbXALMeGjRnNnKyNidBUwCvDv7uodTT6ZZc=
+=S5I1
+-----END PGP SIGNATURE-----
+
+commit 2cab626e7cf166a62787415261d479b9b2bb31ce
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 15 02:41:29 2010 +0900
+
+    refactor: method chain
+

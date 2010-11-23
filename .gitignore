@@ -3,5 +3,7 @@
 coverage
 rdoc/
 pkg/
+script/
 *.gem
 tags
+Manifest.txt

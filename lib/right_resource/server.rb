@@ -25,7 +25,7 @@ class Server < RightResource::Base
   class << self
     [:start, :stop, :reboot].each do |act_method|
       define_method(act_method) do |id|
-        path = element_path(id, act_method).sub(/\.#{format.extension}$/, '')
+        path = element_path(id, act_method).sub(/\.#{format.extension}$/, '') # can't include json extension in request
         action(:post, path)
       end
     end
@@ -50,7 +50,7 @@ class Server < RightResource::Base
     #   Server.get_sketchy_data(server_id, params)
     def get_sketchy_data(id, params)
       path = element_path(id, :get_sketchy_data, params)
-      format.decode(action(:get, path)).generate_attributes
+      format.decode(action(:get, path)).tap {|resource| correct_attributes(resource)}
     end
 
     # Get URL of Server monitoring graph
@@ -70,7 +70,7 @@ class Server < RightResource::Base
       else
         path = element_path(id, :monitoring)
       end
-      format.decode(action(:get, path, params)).generate_attributes
+      format.decode(action(:get, path, params)).tap {|resource| correct_attributes(resource)}
     end
 
     # Get Server settings(Subresource)
@@ -79,25 +79,7 @@ class Server < RightResource::Base
     #   settings = Server.settings(server_id)
     def settings(id)
       path = element_path(id, :settings)
-      format.decode(action(:get, path)).generate_attributes
-    end
-
-    # Get status of any running jobs after calling to the servers resource to run_script
-    # === Parameters
-    # * +resource_ref+ - Hash[:id] or Hash[:href](execute run_script method response location header)
-    #                   (ex. Location: https://my.rightscale.com/api/acct/##/statuses/{id})
-    # === Examples
-    #   server_id = 1
-    #   right_script_id = 1
-    #   Server.run_script(server_id, :right_script => right_script_id)
-    #   # => 201 Created, location: https://my.rightscale.com/api/acct/##/statuses/12345
-    #
-    #   Server.statuses(:id => Server.resource_id) if Server.status == 201
-    #   or
-    #   Server.statuses(:href => Server.headers[:location]) if Server.status == 201
-    def statuses(resource_ref)
-      path = element_path(id, :get_sketchy_data, params)
-      format.decode(action(:get, path)).generate_attributes
+      format.decode(action(:get, path)).tap {|resource| correct_attributes(resource)}
     end
 
     # Get Server tags(server or ec2_current_instance)
@@ -106,7 +88,7 @@ class Server < RightResource::Base
     # === Examples
     #   server = Server.show(1)
     #   tags = Server.tags(server.ec2_current_href)
-    #   # => [{"name"=>"rs_login:state=active"}, {"name"=>"rs_logging:state=active"}, {"name"=>"rs_monitoring:state=active"}]
+    #   # => [{"rs_login:state" => "active"}, {"name"=>"rs_logging:state=active"}, {"name"=>"rs_monitoring:state=active"}]
     def tags(resource_href)
       query_options = {:resource_href => resource_href}
       path = "tags/search.#{format.extension}#{query_string(query_options)}"

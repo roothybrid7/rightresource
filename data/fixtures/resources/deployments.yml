@@ -1,0 +1,37 @@
+# columns
+# :parameters: (Update only)
+#   Hash: :parameters => {"RS_INPUT_VARIABLES" => "type:value"}
+#   "type:value": type = ["text","cred","key","env"]
+#   e.g. :parameters => {:LB_APPLISTENER_NAME => text:www, :DEBUG => "ignore:$ignore"}
+# => [["nickname","can't be blank"]]
+# ====
+# Dump Hash object
+# >> require 'yaml'
+# >> data = open("deployments.yml") {|f| YAML.load(f)}
+# >> open("deployments.obj", "w") {|f| f.write(Marshal.dump(data)}
+# Restore Hash object
+# >> data = open("deployments.obj") {|f| Marshal.load(f)}
+nickname:                          #Nickname of the deployment(required)
+  type: string
+  operations:
+    - create
+    - update
+description:                       #Description of the deployment
+  type: string
+  operations:
+    - create
+    - update
+default_vpc_subnet_href:           #href of the vpc subnet
+  type: string
+  operations:
+    - create
+    - update
+default_ec2_availability_zone:     #Ec2 availability zone (ex: us-east-1a)
+  type: string
+  operations:
+    - create
+    - update
+parameters:
+  type: hash
+  operations:
+    - update

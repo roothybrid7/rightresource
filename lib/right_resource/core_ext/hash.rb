@@ -1,1 +1,1 @@
-require 'right_resource/core_ext/hash/generate_attributes'
+require 'right_resource/core_ext/hash/alter_keys'

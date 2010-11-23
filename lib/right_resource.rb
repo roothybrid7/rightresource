@@ -4,11 +4,13 @@ require 'logger'
 require 'pp'
 require 'rubygems'
 
-require 'json/pure'
+require 'json'
 require 'rest_client'
 require 'crack'
 
-$:.unshift(File.dirname(__FILE__))
+$:.unshift(File.dirname(__FILE__)) unless
+  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+
 # Ruby core extensions
 require 'right_resource/core_ext'
 # base class
@@ -36,5 +38,6 @@ require 'right_resource/macro'
 require 'right_resource/credential'
 
 module RightResource
-  API_VERSION = "1.0".freeze
+  VERSION = '0.3.1'
+  API_VERSION = "1.0"
 end

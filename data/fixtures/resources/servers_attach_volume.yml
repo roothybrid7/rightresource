@@ -1,0 +1,3 @@
+# columns
+ec2_ebs_volume_href:  #URL to the EC2 EBS Volume
+device:               #Device to be mounted on

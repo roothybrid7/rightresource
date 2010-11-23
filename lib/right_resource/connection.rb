@@ -1,14 +1,13 @@
 module RightResource
   class Connection
-    @reraise = false
-
-    attr_accessor :api_version, :log, :api, :format, :username, :password, :account, :reraise, :logger
-    attr_reader :headers, :resource_id, :response, :status
+    attr_accessor :api_version, :log, :url, :api, :format, :username, :password, :account, :logger
+    attr_reader :headers, :resource_id, :response, :status_code, :timeout, :open_timeout
 
     # Set RestFul Client Parameters
     def initialize(params={})
       @api_version = API_VERSION
-      @api = "https://my.rightscale.com/api/acct/"
+      @url = params[:url] || "https://my.rightscale.com"
+      @api = "#{@url}/api/acct/"
       @format = params[:format] || RightResource::Formats::JsonFormat
       @logger = params[:logger] || Logger.new(STDERR).tap {|l| l.level = Logger::WARN}
       RestClient.log = STDERR if @logger.level == Logger::DEBUG # HTTP request/response log
@@ -21,14 +20,16 @@ module RightResource
     #   conn = Connection.new
     #   conn.login(params)
     def login(params={})
-      @username = params[:username] unless params[:username].nil? || params[:username].empty?
-      @password = params[:password] unless params[:password].nil? || params[:password].empty?
-      @account = params[:account] unless params[:account].nil? || params[:account].empty?
-      @api_object = RestClient::Resource.new("#{@api}#{@account}", @username, @password)
+      @username = params[:username] if params[:username]
+      @password = params[:password] if params[:password]
+      @account = params[:account] if params[:account]
+      @open_timeout = params[:open_timeout] || 10 # Connection.timeout
+      @timeout = params[:timeout] || 60           # Response.read.timeout
+      req_opts = {:user => @username, :password => @password, :open_timeout => @open_timeout, :timeout => @timeout}
+      @api_object = RestClient::Resource.new("#{@api}#{@account}", req_opts)
     rescue => e
       @logger.error("#{e.class}: #{e.pretty_inspect}")
       @logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
-      raise if self.reraise
     ensure
       @logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
     end
@@ -51,24 +52,24 @@ module RightResource
         raise "Invalid Action: get|put|post|delete only"
       end
       api_version = {:x_api_version => @api_version, :api_version => @api_version}
-
-      @response = @api_object[path].send(method.to_sym, api_version.merge(headers))
-      @status = @response.code
+      @response = @api_object[path].__send__(method.to_sym, api_version.merge(headers))
+      @status_code = @response.code
       @headers = @response.headers
       @resource_id = @headers[:location].match(/\d+$/).to_s unless @headers[:location].nil?
       @response.body
+    rescue Timeout::Error => e
+      raise TimeoutError.new(e.message)
     rescue => e
-      @status = e.http_code
+      @status_code = e.http_code
       @logger.error("#{e.class}: #{e.pretty_inspect}")
       @logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
-      raise if self.reraise
     ensure
       @logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
     end
 
     # Resource clear
     def clear
-      @response = @headers = @resource_id = @status = nil
+      @response = @headers = @resource_id = @status_code = nil
     ensure
       @logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
     end

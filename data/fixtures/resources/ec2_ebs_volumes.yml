@@ -1,0 +1,7 @@
+# columns
+# :parameters: (Update only)
+cloud_id:               #The cloud or cloud region identifier  (1 = us-east; 2 = eu; 3 = us-west, 4 = ap). default[us-east](create only)
+nickname:               #Nickname of the volume
+description:            #Description of the volume
+ec2_availability_zone:  #Name of the availability  zone(create only)
+aws_size:               #Size of the EBS volume in gigabytes(create only)

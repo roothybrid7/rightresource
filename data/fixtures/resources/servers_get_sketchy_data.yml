@@ -1,0 +1,9 @@
+# columns
+# GET /api/acct/1/servers/1/get_sketchy_data
+# => success response: 200 OK
+start:        #The beginning of the data (an integer number of seconds ago) (e.g. -180)
+end:          #The end of the data (an integer number of seconds ago)
+variable:     #The data source name (e.g. value or gauge)
+resolution:   #The RRA resolution
+plugin_name:  #This is the name of the collectd/custom plugin (e.g. mysql, cpu-0, etc)
+plugin_type:  #This is the type of the instance of the plugin (e.g. cpu-idle for cpu-0 plugin)

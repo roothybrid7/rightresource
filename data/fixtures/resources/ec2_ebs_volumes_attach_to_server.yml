@@ -1,0 +1,6 @@
+# columns
+# :parameters: (Update only)
+ec2_ebs_volume_href:  #URL to the EBS volume
+component_href:       #URL to the server
+device:               #device
+mount:                #'boot'

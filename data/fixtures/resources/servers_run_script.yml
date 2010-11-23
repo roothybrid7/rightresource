@@ -1,0 +1,14 @@
+# columns
+# :parameters: (Update only)
+#   Hash: :parameters => {"RS_INPUT_VARIABLES" => "type:value"}
+#   "type:value": type = ["text","cred","key","env"]
+#   e.g. :parameters => {:LB_APPLISTENER_NAME => text:www, :DEBUG => "ignore:$ignore"}
+id:
+  right_script:       #ID of the RightScript
+  parameters:         #see update action for the format.
+  ignore_lock:        #allows server to ignore that it is locked, when set to 'true'
+#-OR-
+href:
+  right_script_href:  #href of the right script.
+  parameters:         #see update action for the format.
+  ignore_lock:        #allows server to ignore that it is locked, when set to 'true'

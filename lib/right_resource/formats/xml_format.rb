@@ -1,5 +1,3 @@
-require 'crack/xml'
-
 module RightResource
   module Formats
     module XmlFormat
@@ -17,8 +15,8 @@ module RightResource
         raise NotImplementedError, "Not Implementated function #{self.class.name}::#{__method__.to_s}"
       end
 
-      def decode(json)
-        Crack::XML.parse(json)
+      def decode(xml)
+        Crack::XML.parse(xml)
       end
     end
   end

@@ -1,5 +1,3 @@
-require 'json/pure'
-
 module RightResource
   module Formats
     module JsonFormat
