@@ -343,10 +343,10 @@ module RightResource
       @attributes = {}
       load_attributes(attributes)
       if @attributes
-        if self.class.resource_id.nil?
-          @id = @attributes[:href].match(/\d+$/).to_s if @attributes[:href]
-        else
+        if self.class.resource_id && self.class.status_code == 201
           @id = self.class.resource_id
+        else
+          @id = @attributes[:href].match(/\d+$/).to_s if @attributes[:href]
         end
         load_accessor(@attributes)
       end

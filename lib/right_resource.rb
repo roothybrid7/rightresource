@@ -4,7 +4,7 @@ require 'logger'
 require 'pp'
 require 'rubygems'
 
-require 'json'
+require 'json/pure'
 require 'rest_client'
 require 'crack'
 
@@ -38,6 +38,6 @@ require 'right_resource/macro'
 require 'right_resource/credential'
 
 module RightResource
-  VERSION = '0.3.1'
+  VERSION = '0.3.2'
   API_VERSION = "1.0"
 end
