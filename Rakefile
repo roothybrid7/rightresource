@@ -49,7 +49,7 @@ gem_spec = Gem::Specification.new do |s|
   s.homepage = 'https://github.com/satsv/rightresource'
   s.requirements << 'none'
   s.require_path = 'lib'
-  s.files = FileList['CHANGELOG', @rdoc_main, 'LICENSE', 'lib/**/*.rb']
+  s.files = FileList['History.txt', @rdoc_main, 'LICENSE', 'lib/**/*.rb']
   s.has_rdoc = true
   s.rdoc_options << '--title' << @rdoc_title
   s.rdoc_options <<  '--main' << @rdoc_main

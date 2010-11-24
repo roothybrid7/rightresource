@@ -3,264 +3,15 @@
 * 1 major enhancement:
   * Initial release
 
-tag v0.1.2
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Wed Oct 27 18:11:00 2010 +0900
-
-version 0.1.2
-
-commit 31dbd90d8a156cd157889f301ddf0d4f13a3c6da
+commit dd59bf61c82aad05d90b35c3286cdefb65830277
 Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Wed Oct 27 18:08:15 2010 +0900
-
-    modified: version up
-
-
-tag v0.1.3
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Thu Oct 28 16:12:36 2010 +0900
-
-resource action methods support
-new resource
-
-commit 3aa0346177961835477556fe49de2a1528c8d907
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Thu Oct 28 16:11:59 2010 +0900
-
-    version up gem: 0.1.3
-
-
-tag v0.1.4
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Fri Nov 5 09:25:59 2010 +0900
-
-refactoring, add core_ext and tap method
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (Darwin)
-
-iQEcBAABAgAGBQJM008XAAoJEFWFhZJ7f/ucQJgH/2Ley6uDGPxDCu2TqVK1EKAE
-djTiyGxyNmtCS0y54aHyFKtQ7wLixL2J0AMsZiBzUj/IF6/KjRX0Y0B2shF8y+YP
-SEzKGWDwq6UMLXBAjNtndDc0oUwI/XZivowc5kBtpSQi+ebmH8s8AXGlMDJ//J2r
-KaLAvUimfk4w5YzkPdmkWzCVlOIqLZwAetXPPc9qg8AaPcyH4L4fQPGU4rH2y/ng
-XM4p+FuErbFrEWEGjIdFaXrgyGO18dLPOF29rxP+NPg/r/XCOr5stYXZYlzP9oq2
-2wHsVLTJKjJ1pqi8vpZRQ3rtHkOrkhhHU1LJY/g0yT77i0MDykU0g57/n8VMe6A=
-=fP8c
------END PGP SIGNATURE-----
-
-commit 57bb16f2eb05204451c33bfa7279f91d52b899b2
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Fri Nov 5 09:23:49 2010 +0900
-
-    remove file
-
- delete mode 100644 lib/right_resource/login.rb
-
-tag v0.1.5
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 09:34:12 2010 +0900
-
-support method: create, update
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (Darwin)
-
-iQEcBAABAgAGBQJM10WEAAoJEFWFhZJ7f/ucMMcH/RZwePsjg7s19HRY3GUDhRzY
-zdr1Hm2Vo+sZ/5zH+LDrYc8x3nkCXl059FsYJaDwXOBubu4R3tv5p5/7emh039QB
-764gotcSXXcPGqkxCZzftou+5rUxuiKZF8aUgRGSDUXGHyhqKL6poQH+81GICwwH
-30yMU4p+In8/YaXHuAUEhKG+ECVzz5ovxPu7XRN+kP1BdMe51cAgz9bLnWY/j3/C
-movPVjjMOVs579CE54DuCEXj4DXu85tZLXTIjUQO51VFhzR3UyTHtrEP281tNOUI
-Ca0IlviKimMIBNNUELXcLBmJ38yA0D5UXZeeypdx7DAXYVKXmRmKAJPqDDROkIk=
-=Mlr5
------END PGP SIGNATURE-----
-
-commit 07a8076ca9e7e96a8afb1d78d9bdad9791c3d1e2
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 09:33:01 2010 +0900
-
-    modified: support create, update method and bug fix
-
-
-tag v0.1.6
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 11:49:45 2010 +0900
-
-cloud_id support
-mistake Rakefile
-
-commit 2e01389ef942886ab3fddc4644d419b6d4acc009
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 11:48:02 2010 +0900
-
-    bug fix: gems name mistake
-
-
-tag v0.2.0
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 15:47:38 2010 +0900
-
-update method support
-
-commit 61e1bea412912a3833f8dee9327fd050a9e188b5
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 15:46:18 2010 +0900
-
-    bug fix: method, rdoc commentout
-
-
-tag v0.2.1
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 19:57:10 2010 +0900
-
-bug fix
-
-commit b916804a3dd3e123ba1be9f35d6562d69d6b8c9e
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 19:56:38 2010 +0900
-
-    modified: convert subresources hash key string2symbol
-
-
-tag v0.2.2
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 22:24:12 2010 +0900
-
-verison up
-
-commit 789c239a8df5f385d23eb871b2d739e6ddbb6953
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 8 22:24:03 2010 +0900
-
-    version up: v0.2.1 -> v0.2.2
-
-
-tag v0.2.3
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Tue Nov 9 09:39:48 2010 +0900
-
-logger level debug -> warn
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (Darwin)
-
-iQEcBAABAgAGBQJM2JhUAAoJEFWFhZJ7f/ucbX0IAJvYMoABhwisshJUih2E/8lU
-Bwz1ZZplGlfSB85P+ozgKjSRowzdBi524ztTeVrbjddRaBAj0h63DoB7dnPFd6UH
-bzGIM42PjmeE0ccgGPx/8PGtKSWWZ9tyXFFEVuY4fhTriNsJPT03gjspMwLcerYK
-EAdQCAq2JlOWdxd/zfyHd0irpkMSnn966G8FEgNnf328av9jidiP4LJ0K2docF/k
-G3v7oBbRQBES0z7TdOTCnyV/ge390V22L0Ve0IUw/5EV4mIJ3DJZ9BuSu/Eb5PO8
-oN/0JzuGyc8dsHgARHWz/aaP52gU8lKQLvhQTxS6U6LLtoVPOdTrMMyhC2Ds528=
-=TU88
------END PGP SIGNATURE-----
-
-commit 8b7698d66db112037c338f0d2eb19fb886e36fbd
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Tue Nov 9 09:39:05 2010 +0900
-
-    modified: logger level debug -> warn
-
-
-tag v0.2.4
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Tue Nov 9 21:15:59 2010 +0900
-
-bug fix: api returns
-
-commit 9e2e4fc1932a5b97a237513356f4bbf673a9fe92
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Tue Nov 9 21:14:44 2010 +0900
-
-    bug fix: mistake expect hash of api returns, collect array
-
-
-tag v0.2.5
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Tue Nov 9 22:07:18 2010 +0900
-
-bug fix
-
-commit be4cedc3556840f6ec25914b86f7579c3736e668
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Tue Nov 9 22:06:56 2010 +0900
-
-    bug fix: mistake except api returns array, collect hash
-
-
-tag v0.2.6
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Wed Nov 10 11:43:30 2010 +0900
-
-bug fix, inherit
-
-commit b87729b4595f09914110ebe61e9467502ec51b10
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Wed Nov 10 11:43:01 2010 +0900
-
-    version up
-
-
-tag v0.2.7
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Fri Nov 12 16:25:06 2010 +0900
-
-version up
-
-commit a33ccde253c9a3c8b03db5f393814b7d75f9888a
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Fri Nov 12 16:24:47 2010 +0900
-
-    v0.2.6->v0.2.7
-
-
-tag v0.2.8
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Fri Nov 12 17:40:10 2010 +0900
-
-bug fix
-
-commit d7c446c190dcf8a2d78cf74f56826e845dc7f946
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Fri Nov 12 17:39:43 2010 +0900
-
-    bug fix: tab, space
-
-
-tag v0.2.9
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 15 01:52:24 2010 +0900
-
-tag resource api support and refacor
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (Darwin)
-
-iQEcBAABAgAGBQJM4BPIAAoJEFWFhZJ7f/ucj9UH/RJefJa084Wvky0XkgnPce/i
-kR9c/CK2YhrMmiVmf1PL3is1vs543Oh7f7YOALX6SPe/T0AUE/JJVjsgKzfoVJt3
-YhOz1ftLuFwHohH6Bm2n5uadTrZdbo0SdoIk6SaWGIDDFm+BJ4LdPLmJuJALF4Aj
-dFWeF9JEf0G/P913KIX8JUFUmUrZgKXkIMAci2UDZicMcyKYtqEuGkfPvKCMblkX
-JB0zlz4q1JnGX0aVn2ZMp37Di6w9zlrRnQ00E6OOs3MVry3o8nv3AnC+FEsb4Pfk
-r/WDJ+ULVKQgNCrl/knSmNrsOZzclY1KvegEJwJp2zgg70E7SKkADoS1LATSu3k=
-=AND4
------END PGP SIGNATURE-----
-
-commit b1add55c13950a7f8085f97b9c91216d7a7d07fa
-Author: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 15 01:51:48 2010 +0900
-
-    versionup: v0.2.9
-
-
-tag v0.3.0
-Tagger: Satoshi Ohki <roothybrid7@gmail.com>
-Date:   Mon Nov 15 02:41:51 2010 +0900
-
-version up
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (Darwin)
-
-iQEcBAABAgAGBQJM4B9fAAoJEFWFhZJ7f/uc4/4H+gJs+uoCeYfcNfo0XaQOzyFJ
-aohtlhncO3svzbNR+kko6Psbp0Ae8jvorOQZdX0wjcXQBVhft1npI3UEpnU21OA/
-/KnuUziVS5Cgi0FAibCHaXwIwSCz6yN55S1v5tjIccI0Fy5D9Y/PaeWNVRtYs7Fv
-7KKsKPTl2MUAe0GONQbK1ze0A3ECWbhup+4VQd+7jmOpRMn4aqiThbm7qlQpBU5/
-Uqj8XGpnNQZcvjrjA4KszTrqd55HjoorB34OuXrfanKwXw/tfoom95QKyuKq8aXV
-ECtHsJzOgibytQwYRr/e3gqg2wEOZbXALMeGjRnNnKyNidBUwCvDv7uodTT6ZZc=
-=S5I1
------END PGP SIGNATURE-----
+Date:   Wed Nov 24 08:58:24 2010 +0900
+
+    refactor: recursive convert attrs, update method
+    
+    * recursive convert resource attributes
+    * update method support
+    * add fixtures of resource attributes
 
 commit 2cab626e7cf166a62787415261d479b9b2bb31ce
 Author: Satoshi Ohki <roothybrid7@gmail.com>
@@ -268,3 +19,445 @@ Date:   Mon Nov 15 02:41:29 2010 +0900
 
     refactor: method chain
 
+commit b1add55c13950a7f8085f97b9c91216d7a7d07fa
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 15 01:51:48 2010 +0900
+
+    versionup: v0.2.9
+
+commit c206b7201b88b7864c60b3e5b64192d8ba794523
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 15 01:42:34 2010 +0900
+
+    refactor and add: tag resource, undef method
+    
+    core_ext class Hash: generate_attributes(key: String2Symbol and '-'2'_')
+    add tag resource api
+    refactor: undef not use method
+
+commit 716ea66791a7ca9bf284fa2f854258c82d1df6ae
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Nov 14 15:30:09 2010 +0900
+
+    add: resource method, base class method: action(RestFul)
+
+commit 241c072da738d41fa543b5218093555a66a798ae
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sat Nov 13 11:45:40 2010 +0900
+
+    refactor: remove methods
+
+commit cdaba1c34a4605eb4c89504057b9b417bd32f3e7
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sat Nov 13 11:41:25 2010 +0900
+
+    add: action method support
+
+commit f546e00d9c35a87324df05d910335d4a8a7d4a1c
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 18:44:02 2010 +0900
+
+    modified: Resource.create comment
+
+commit d7c446c190dcf8a2d78cf74f56826e845dc7f946
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 17:39:43 2010 +0900
+
+    bug fix: tab, space
+
+commit a33ccde253c9a3c8b03db5f393814b7d75f9888a
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 16:24:47 2010 +0900
+
+    v0.2.6->v0.2.7
+
+commit a91118256ed82fc436fcca827eaa95b6b5e1515a
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 12 16:21:13 2010 +0900
+
+    add: Search server's tag support
+    
+    Search servers's resource tag(server's href or current instance's href)
+    created by Nimai Malle
+
+commit b87729b4595f09914110ebe61e9467502ec51b10
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Nov 10 11:43:01 2010 +0900
+
+    version up
+
+commit d27ae1037c75900c384339ca4e320ecd1e2fb8b2
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Nov 10 10:49:37 2010 +0900
+
+    bug fix: format
+
+commit 99838b47518bee172be4d649917ebf4744f250f7
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Nov 10 09:02:39 2010 +0900
+
+    modified: variable inherit
+
+commit be4cedc3556840f6ec25914b86f7579c3736e668
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 22:06:56 2010 +0900
+
+    bug fix: mistake except api returns array, collect hash
+
+commit b46cf20bc72fe2580a46f95fdd1425e03754a01c
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 22:06:21 2010 +0900
+
+    bug fix: mistake except api returns array, collect hash
+
+commit 9e2e4fc1932a5b97a237513356f4bbf673a9fe92
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 21:14:44 2010 +0900
+
+    bug fix: mistake expect hash of api returns, collect array
+
+commit 8b7698d66db112037c338f0d2eb19fb886e36fbd
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Tue Nov 9 09:39:05 2010 +0900
+
+    modified: logger level debug -> warn
+
+commit 789c239a8df5f385d23eb871b2d739e6ddbb6953
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 22:24:03 2010 +0900
+
+    version up: v0.2.1 -> v0.2.2
+
+commit eebbb4fe3a7608053ae852efb703c5946f120acb
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 22:22:44 2010 +0900
+
+    modified: add rdoc in gem
+
+commit b916804a3dd3e123ba1be9f35d6562d69d6b8c9e
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 19:56:38 2010 +0900
+
+    modified: convert subresources hash key string2symbol
+
+commit 61e1bea412912a3833f8dee9327fd050a9e188b5
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 15:46:18 2010 +0900
+
+    bug fix: method, rdoc commentout
+
+commit 779ab906e6b6da686312472e6f95e401d2221a3c
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 11:55:02 2010 +0900
+
+    bug fix: gems name mistake
+
+commit 2e01389ef942886ab3fddc4644d419b6d4acc009
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 11:48:02 2010 +0900
+
+    bug fix: gems name mistake
+
+commit 5c52c7e1c68dc16439e0f474f96a558909300994
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 10:24:42 2010 +0900
+
+    modified: when create resource, except modified cloud_id
+
+commit f15a75f72ea9a46650710b813af6ac901dacdfc2
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 10:24:03 2010 +0900
+
+    modified: when create resource, except modified cloud_id
+
+commit 07a8076ca9e7e96a8afb1d78d9bdad9791c3d1e2
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 09:33:01 2010 +0900
+
+    modified: support create, update method and bug fix
+
+commit 68e3311ec100f324604780c86acbcb062731104d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Nov 8 01:06:40 2010 +0900
+
+    add: license paragraph, rename README
+
+commit 28bd894a086b37db7ef7d70629c482d8f7aa960b
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Nov 7 17:14:47 2010 +0900
+
+    modified: Rakefile, add tags(ctag) ignore
+
+commit 59d47437af3ec0cc30dfe3962b2e047b28910d59
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Nov 7 13:49:31 2010 +0900
+
+    modified: change rdoc template, gem_spec
+    
+    rdoc template: sdoc
+    gem spec: add dependency, homepage
+
+commit c1ff829ce7f3c0c7490eb44096d156bdf5d443df
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Nov 7 13:47:58 2010 +0900
+
+    modified: remove pp
+
+commit 26d3c47926c470f7ff59b85eb18048a5521a7a9a
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Nov 7 02:37:49 2010 +0900
+
+    modified: ignore rdoc, gem package, rake rdoc task
+
+commit 333ff220e8b23e1c84d64ed49a5b4249455d0cad
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sat Nov 6 22:11:55 2010 +0900
+
+    modified: version string freeze
+
+commit ee0f54b418407c0d5b47ca95325b61ca21765be9
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sat Nov 6 21:39:38 2010 +0900
+
+    add: require class[logger, pp]
+
+commit 9fdf9ceb21b4a6afbb048409e4f9970bfd3a1679
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 5 19:45:19 2010 +0900
+
+    add: refactor
+
+commit 57bb16f2eb05204451c33bfa7279f91d52b899b2
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 5 09:23:49 2010 +0900
+
+    remove file
+
+commit 88c2967f94153efeaeca8c228442f8d97a9d80c4
+Merge: 3589cb8 5b828d3
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Nov 5 09:20:55 2010 +0900
+
+    refactor and merge core_ext
+
+commit 5b828d35d4ea6dec7631e590cda28913692f5f3f
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Nov 4 21:03:40 2010 +0900
+
+    add: core_ext
+
+commit 42dc61051ed11387601b9784cb57a544eca151a8
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Nov 4 19:03:24 2010 +0900
+
+    add: core_ext.rb
+
+commit 9fe0b4c667964d7f843daf2042d218a02908e15d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Nov 4 18:57:49 2010 +0900
+
+    add: tap method[ruby version < 1.9]
+
+commit 380247af7cc6fb245d86b8d1cc73ce06ae536afd
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Nov 4 16:43:35 2010 +0900
+
+    yield self
+
+commit 3589cb8714651238b2476887a0837c10639c4f53
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 31 15:47:09 2010 +0900
+
+    modified: require rubygems line moved
+
+commit 423b213c07790437efab7df2d45d59b9129eb710
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 31 15:37:18 2010 +0900
+
+    modified: require rubygems line moved
+
+commit 218b8b4e725abf9587c6fd8e7f971d1f0e3d8cb0
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Oct 29 16:56:36 2010 +0900
+
+    add: new resource
+
+commit 604c0253080c7f413a6604832b14e83ce707dd63
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Fri Oct 29 09:00:57 2010 +0900
+
+    work temporary
+
+commit 3aa0346177961835477556fe49de2a1528c8d907
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Oct 28 16:11:59 2010 +0900
+
+    version up gem: 0.1.3
+
+commit c8b69bafb25444c1b1c6073c67ba049430938db8
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Oct 28 16:11:16 2010 +0900
+
+    versionup
+
+commit d849c4772e4a66fff45a794d84832bcfab97cb50
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Thu Oct 28 16:09:42 2010 +0900
+
+    modified: resource action methods support, add: new resource support
+
+commit 31dbd90d8a156cd157889f301ddf0d4f13a3c6da
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Oct 27 18:08:15 2010 +0900
+
+    modified: version up
+
+commit 57bc0d37597cee69f30ddba0bc064cb4f4075d49
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Wed Oct 27 17:47:30 2010 +0900
+
+    modified: set fileformat
+
+commit 6f3cd28a2f77d8f8af61fd6d8655aba9f3ae9c08
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 21:38:34 2010 +0900
+
+    bug fix: future method: __method__ in v1.8.5
+
+commit 0134f9b10bfe6a81180227a2748f43b53238028d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 15:48:10 2010 +0900
+
+    Modified: changelog
+
+commit badcf624cb6a23d15376eb4f823d576749f169e0
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 15:45:29 2010 +0900
+
+    bug fix: centos5.4 older ruby version unsupported method
+
+commit 885ac3a4b65d5d30b3dbd3a49f881622d2aaf05f
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 02:48:57 2010 +0900
+
+    modified: return self in server_array#instances for method chain
+
+commit 3c786aa835b932847905011077114424aac1449d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 01:30:44 2010 +0900
+
+    refactor: require packages
+
+commit 2727106d0b8da35d0fbdbb22c8ee9a079e2ff29d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 01:14:54 2010 +0900
+
+    bug fix: path
+
+commit 82d890712462641a994218ec465536f8e982ce2d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 01:04:11 2010 +0900
+
+    Removed: oldfile
+
+commit fbb08ecd98bbff3f175abef37e638511a33c4be8
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 01:03:03 2010 +0900
+
+    Add: Gem package files
+
+commit 80ed530ecc702592a322d9dccc1b4d371c8fd282
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 01:01:31 2010 +0900
+
+    modified: version removed
+
+commit ad32eecc7696eaf83fdb9d36fbc9cb11f692cc0d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 01:00:17 2010 +0900
+
+    modified: rdoc author removed
+
+commit 304b5a8adba3666528189844b611f474e09f58f8
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 00:41:32 2010 +0900
+
+    Add: library's git ignore
+
+commit 1cf40878bbec32276548643a128bee222dadfaa8
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 00:09:45 2010 +0900
+
+    remove testcode from git
+
+commit 5275ce543458d7f8152b8f67f2639ee441e3b40f
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Mon Oct 25 00:07:55 2010 +0900
+
+    test directory ignore
+
+commit 67ef25b9db2ecb7f82fd19491d111a5f457a8439
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 23:43:26 2010 +0900
+
+    Add: format processor
+
+commit b3fa7b84f7a17608ebd45236bb07650c129ff657
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 21:44:00 2010 +0900
+
+    bug fix: matchobject.to_s
+
+commit 4b9f9e9be62ffc16bdc7a4b2a057a664ed68a736
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 16:34:18 2010 +0900
+
+    Add: require file
+
+commit 2a0c86ae94cd2ab226083d6348de2282163b6f4a
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 15:14:06 2010 +0900
+
+    Add: deployments API
+
+commit c09397ebc384163da1c057cb26285ea6e68bf5b9
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 14:57:56 2010 +0900
+
+    Modified: Split Child class to new file
+
+commit 5c9eb46b61e1b5d329c70498e18a2f672ad1e72d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 14:53:16 2010 +0900
+
+    Add: server subresource
+
+commit 32ba81fd72a083854f5f57e7deb408315a1601a8
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 14:52:55 2010 +0900
+
+    Add: server subresource
+
+commit 0807bc50ac59d185d1c634e8af7221572273f6bb
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 12:04:16 2010 +0900
+
+    Add: alert specifications
+
+commit 4652139b64d1ce26be444063907b25b17180fa0d
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 11:52:31 2010 +0900
+
+    Add: package include module and class file
+
+commit 1098221342df77d6a12ea5cfabe84bdc208112e4
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 10:55:27 2010 +0900
+
+    move libfile to directory
+
+commit e30dfd47a4c37f68a28fb03d523174ee5131159a
+Author: Satoshi Ohki <roothybrid7@gmail.com>
+Date:   Sun Oct 24 10:51:48 2010 +0900
+
+    rename package
