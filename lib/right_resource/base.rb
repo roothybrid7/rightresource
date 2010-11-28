@@ -169,7 +169,6 @@ module RightResource
         connection.clear
         result = format.decode(connection.get(path)).tap do |resource|
           correct_attributes(resource)
-          resource[:id] = resource[:href].match(/[0-9]+$/).to_s.to_i
           resource
         end
         instantiate_record(result)
@@ -213,11 +212,13 @@ module RightResource
       end
 
       # Update resource
-#      def update(id, params={})
-#        #TODO: refactor
-#        path = element_path(id)
-#        connection.put(path, params)
-#      end
+      def update(id, params={})
+        resource = self.show(id)
+        return nil if resource.nil?
+
+        resource.update_attributes(params)
+        resource.save
+      end
 
       # Delete resource
       # Example:
@@ -338,48 +339,55 @@ module RightResource
     def dup
       self.class.new.tap do |resource|
         resource.attributes = @attributes.reject {|key,value| key == :href}
-        resource.load_accessor(resource.attributes)
       end
     end
 
     def initialize(attributes={})
-      # sub-resource4json's key name contains '-'
       @attributes = {}
-      load_attributes(attributes)
+      # sub-resource4json's key name contains '-'
+      loads(attributes)
       if @attributes
         if self.class.resource_id && self.class.status_code == 201
           @id = self.class.resource_id
         else
           @id = @attributes[:href].match(/\d+$/).to_s if @attributes[:href]
         end
-        load_accessor(@attributes)
       end
       yield self if block_given?
     end
 
-    def load_attributes(attributes)
+    def loads(attributes)
       raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
-      @attributes = self.class.correct_attributes(attributes)
+
+      attributes.alter_keys
+      attributes.each do |key,value|  # recursive
+        @attributes[key] =
+          case value
+          when Array
+            value.map do |attrs|
+              if attrs.is_a?(Hash)
+                correct_attributes(attrs)
+              else
+                attrs.dup rescue attrs
+              end
+            end
+          when Hash
+            correct_attributes(value)
+          else
+            value.dup rescue value
+          end
+      end
       self
     end
 
-    def update_attributes(attributes)
-      load_attributes(attributes) && load_accessor(attributes) && save
+    # Updates a single attribute and then saves the object.
+    def update_attribute(name, value)
+      self.send("#{name}=".to_sym, value)
+      self.save
     end
 
-    def load_accessor(attributes)
-      raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
-      attributes.each_pair do |key, value|
-        instance_variable_set("@#{key}", value) # Initialize instance variables
-        self.class.class_eval do
-          define_method("#{key}=") do |new_value| # ex. obj.key = new_value
-            instance_variable_set("@#{key}", new_value)
-          end
-          define_method(key) do
-            instance_variable_get("@#{key}")
-          end
-        end
-      end
+    def update_attributes(attributes)
+      loads(attributes) && save
     end
 
     def new?
@@ -399,9 +407,6 @@ module RightResource
     # For checking <tt>respond_to?</tt> without searching the attributes (which is faster).
     alias_method :respond_to_without_attributes?, :respond_to?
 
-    # A method to determine if an object responds to a message (e.g., a method call). In Active Resource, a Person object with a
-    # +name+ attribute can answer <tt>true</tt> to <tt>my_person.respond_to?(:name)</tt>, <tt>my_person.respond_to?(:name=)</tt>, and
-    # <tt>my_person.respond_to?(:name?)</tt>.
     def respond_to?(method, include_priv = false)
       method_name = method.to_s
       if attributes.nil?
@@ -429,6 +434,7 @@ module RightResource
         @@non_rs_params.each {|key| h[key.to_s] = self.attributes[key] if self.attributes.has_key?(key) && self.attributes[key]}
         connection.clear
         connection.put(element_path, h)
+        self
       end
 
       def create
@@ -440,6 +446,7 @@ module RightResource
         connection.post(collection_path, h)
         self.id = self.class.resource_id
         self.href = self.class.headers[:location]
+        self
       end
 
       def resource_name

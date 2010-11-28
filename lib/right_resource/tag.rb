@@ -14,7 +14,7 @@
 #     p Tag.search(:resource_href => ec2_href)
 class Tag < RightResource::Base
   class << self
-    undef :index, :show, :create, :destory
+    undef :index, :show, :create, :update, :destory
 
     [:set, :unset].each do |act_method|
       define_method(act_method) do |params|
