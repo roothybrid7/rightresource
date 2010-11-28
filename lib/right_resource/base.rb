@@ -366,13 +366,13 @@ module RightResource
           when Array
             value.map do |attrs|
               if attrs.is_a?(Hash)
-                correct_attributes(attrs)
+                loads(attrs)
               else
                 attrs.dup rescue attrs
               end
             end
           when Hash
-            correct_attributes(value)
+            loads(value)
           else
             value.dup rescue value
           end
