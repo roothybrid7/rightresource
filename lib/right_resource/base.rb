@@ -335,12 +335,20 @@ module RightResource
     #  self.class.known_attributes + self.attributes.keys.map(&:to_s)
     end
 
-    # Duplicate resource
+    # Duplicate resource without save
     def dup
       self.class.new.tap do |resource|
         resource.attributes = @attributes.reject {|key,value| key == :href}
       end
     end
+    alias_method :orig_dup, :dup
+
+    # Duplicate resource with save
+    def clone
+      resource = dup
+      resource.save
+    end
+    alias_method :orig_clone, :clone
 
     def initialize(attributes={})
       @attributes = {}
