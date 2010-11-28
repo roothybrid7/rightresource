@@ -141,7 +141,6 @@ module RightResource
         connection.clear
         result = format.decode(connection.get(path || [])).map do |resource|
           correct_attributes(resource)
-          resource
         end
         instantiate_collection(result)
       rescue => e
@@ -169,7 +168,6 @@ module RightResource
         connection.clear
         result = format.decode(connection.get(path)).tap do |resource|
           correct_attributes(resource)
-          resource
         end
         instantiate_record(result)
       rescue => e
@@ -259,27 +257,28 @@ module RightResource
       # '-'(dash) is included but not '_'(under score) in AWS Parameter keys.
       # On the other hand '_'(under score) is included in RightScale Parameter keys
       # e.g. Hash["ip-address"] -> Hash[:ip_address], Hash["deployment_href"] -> Hash[:deployment_href]
-      def correct_attributes(attributes)
-        return unless attributes.is_a?(Hash)
+      def correct_attributes(attrs)
+        return unless attrs.is_a?(Hash)
 
-        attributes.alter_keys
-        attributes.each do |key,value|  # recursive
-          attributes[key] =
+        attrs.alter_keys
+        attrs.each do |key,value|  # recursive
+          attrs[key] =
             case value
             when Array
-              value.map do |attrs|
-                if attrs.is_a?(Hash)
-                  correct_attributes(attrs)
+              value.map do |a|
+                if a.is_a?(Hash)
+                  a.dup.alter_keys rescue a.alter_keys
                 else
-                  attrs.dup rescue attrs
+                  a.dup rescue a
                 end
               end
             when Hash
-              correct_attributes(value)
+              value.dup.alter_keys rescue value.alter_keys
             else
               value.dup rescue value
             end
         end
+        attrs
       end
 
       protected
@@ -341,51 +340,52 @@ module RightResource
         resource.attributes = @attributes.reject {|key,value| key == :href}
       end
     end
-    alias_method :orig_dup, :dup
 
     # Duplicate resource with save
     def clone
       resource = dup
       resource.save
     end
-    alias_method :orig_clone, :clone
 
-    def initialize(attributes={})
+    def initialize(attrs={})
+      if self.class.resource_id && self.class.status_code == 201
+        @id = self.class.resource_id
+      else
+        @id = attrs[:href].match(/\d+$/).to_s if attrs[:href]
+      end
+
       @attributes = {}
       # sub-resource4json's key name contains '-'
-      loads(attributes)
-      if @attributes
-        if self.class.resource_id && self.class.status_code == 201
-          @id = self.class.resource_id
-        else
-          @id = @attributes[:href].match(/\d+$/).to_s if @attributes[:href]
-        end
-      end
+      loads(attrs)
       yield self if block_given?
     end
 
-    def loads(attributes)
-      raise ArgumentError, "expected an attributes Hash, got #{attributes.pretty_inspect}" unless attributes.is_a?(Hash)
+    def loads(attrs)
+      raise ArgumentError, "expected an attributes Hash, got #{attrs.pretty_inspect}" unless attrs.is_a?(Hash)
 
-      attributes.alter_keys
-      attributes.each do |key,value|  # recursive
+      attrs.each do |key,value|  # recursive
         @attributes[key] =
           case value
           when Array
-            value.map do |attrs|
-              if attrs.is_a?(Hash)
-                loads(attrs)
+            value.map do |a|
+              if a.is_a?(Hash)
+                a.dup.alter_keys rescue a.alter_keys
               else
-                attrs.dup rescue attrs
+                a.dup rescue a
               end
             end
           when Hash
-            loads(value)
+            value.dup.alter_keys rescue value.alter_keys
           else
             value.dup rescue value
           end
       end
       self
+    end
+
+    # reload attributes of resource from the rightscale web api(discard local modified)
+    def reload
+      self.loads(self.class.show(self.id).attributes)
     end
 
     # Updates a single attribute and then saves the object.
@@ -394,8 +394,8 @@ module RightResource
       self.save
     end
 
-    def update_attributes(attributes)
-      loads(attributes) && save
+    def update_attributes(attrs)
+      loads(attrs) && save
     end
 
     def new?
@@ -476,12 +476,12 @@ module RightResource
         if method_name =~ /(=|\?)$/
           case $1
           when "="
-            attributes[$`.to_sym] = arguments.first
+            self.attributes[$`.to_sym] = arguments.first
           when "?"
-            attributes[$`.to_sym]
+            self.attributes[$`.to_sym]
           end
         else
-          return attributes[method_symbol] if attributes.include?(method_symbol)
+          return self.attributes[method_symbol] if self.attributes.include?(method_symbol)
           # not set right now but we know about it
 #          return nil if known_attributes.include?(method_name)
           super
