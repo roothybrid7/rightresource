@@ -54,10 +54,10 @@ class Tag < RightResource::Base
         if params[:resource_type] == "ec2_instance"
           resource_name = "Server"
         else
-          resource_name = params[:resource_type].split(/-/).map {|r| r.capitalize}.join
+          resource_name = params[:resource_type].split(/-/).map {|r| r.capitalize}.join # underscore2pascal
         end
-        klass = const_get(resource_name)
-        klass.instantiate_collection(result)
+        klass = const_get(resource_name)  # Get class name
+        klass.instantiate_collection(result)  # Get every class instance
       end
     rescue => e
       logger.error("#{e.class}: #{e.pretty_inspect}")
@@ -67,6 +67,7 @@ class Tag < RightResource::Base
       logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
     end
 
+    # Get all taggable resources name (server, server_array, server_template, etc.)
     # === Examples
     #   Tag.taggable_resources
     def taggable_resources

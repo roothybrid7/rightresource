@@ -87,6 +87,7 @@ module RightResource
 
       # RestFul Method
       def action(method, path, params={})
+        connection.clear
         case method
         when :get
           connection.get(path, params)
@@ -96,6 +97,8 @@ module RightResource
           connection.put(path, params)
         when :delete
           connection.delete(path, params)
+        else
+          raise ArgumentError, "Unsupported HTTP method!!"
         end
       rescue => e
         logger.error("#{e.class}: #{e.pretty_inspect}")
@@ -224,6 +227,7 @@ module RightResource
       #   Server.destory(server.id)
       def destory(id)
         path = element_path(id)
+        connection.clear
         connection.delete(path)
       end
 
@@ -388,6 +392,7 @@ module RightResource
     end
 
     def destory
+      connection.clear
       connection.delete(element_path)
     end
 
@@ -422,6 +427,7 @@ module RightResource
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         h = Hash[*pair.flatten]
         @@non_rs_params.each {|key| h[key.to_s] = self.attributes[key] if self.attributes.has_key?(key) && self.attributes[key]}
+        connection.clear
         connection.put(element_path, h)
       end
 
@@ -430,6 +436,7 @@ module RightResource
         pair = URI.decode({resource_name.to_sym => attrs}.to_params).split('&').map {|l| l.split('=')}
         h= Hash[*pair.flatten]
         @@non_rs_params.each {|key| h[key.to_s] = self.attributes[key] if self.attributes.has_key?(key) && self.attributes[key]}
+        connection.clear
         connection.post(collection_path, h)
         self.id = self.class.resource_id
         self.href = self.class.headers[:location]

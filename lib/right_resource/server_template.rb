@@ -1,5 +1,6 @@
 class ServerTemplate < RightResource::Base
   class << self
+    # Get scripts added to the ServerTemplate every phases
     # === Parameters
     # * _id_ - ServerTemplate id
     # * _params_ - Hash (keys = [:phase]) ex. 'boot', 'operational', 'decommission' if not defined, all phases
