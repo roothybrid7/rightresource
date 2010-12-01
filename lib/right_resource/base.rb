@@ -267,13 +267,15 @@ module RightResource
             when Array
               value.map do |a|
                 if a.is_a?(Hash)
-                  a.dup.alter_keys rescue a.alter_keys
+                  v = a.dup.alter_keys rescue a.alter_keys
+                  correct_attributes(v)
                 else
                   a.dup rescue a
                 end
               end
             when Hash
-              value.dup.alter_keys rescue value.alter_keys
+              v = value.dup.alter_keys rescue value.alter_keys
+              correct_attributes(v)
             else
               value.dup rescue value
             end
