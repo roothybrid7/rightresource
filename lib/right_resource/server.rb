@@ -41,6 +41,24 @@ class Server < RightResource::Base
       end
     end
 
+    # Get Current instance of server
+    def show_current(id, params={})
+      path = element_path(id, :current, params)
+      connection.clear
+      result = format.decode(connection.get(path)).tap do |resource|
+        correct_attributes(resource)
+      end
+      instantiate_record(result).tap do |resource|
+        resource.id = resource.href.sub(/\/current$/, "").match(/[0-9]+$/).to_s.to_i
+      end
+    rescue => e
+      logger.error("#{e.class}: #{e.pretty_inspect}")
+      logger.debug {"Backtrace:\n#{e.backtrace.pretty_inspect}"}
+      nil
+    ensure
+      logger.debug {"#{__FILE__} #{__LINE__}: #{self.class}\n#{self.pretty_inspect}\n"}
+    end
+
     # Get sampleing data
     # === Return
     #   Hash (keys # => [:cf, :start, :vars, :lag_time, :end, :data :avg_lag_time])
