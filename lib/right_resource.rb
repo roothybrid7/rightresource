@@ -1,3 +1,4 @@
+require 'resolv-replace'
 require 'uri'
 require 'rexml/document'
 require 'logger'
