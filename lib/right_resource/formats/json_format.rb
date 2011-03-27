@@ -16,7 +16,7 @@ module RightResource
       end
 
       def decode(json)
-        JSON.parse(json)
+        Crack::JSON.parse(json)
       end
     end
   end
