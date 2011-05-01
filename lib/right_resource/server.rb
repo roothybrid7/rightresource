@@ -115,4 +115,17 @@ class Server < RightResource::Base
       }.flatten]
     end
   end
+
+  # Get Server settings with merge to instance
+  # === Examples
+  #   server = Server.index(:filter => "nickname=dev-001").first
+  #   Server.settings
+  def settings
+    if self.id
+      result = self.class.settings(self.id)
+      self.loads(result) if self.class.status_code == 200 && result
+    end
+
+    self
+  end
 end
