@@ -116,16 +116,37 @@ class Server < RightResource::Base
     end
   end
 
-  # Get Server settings with merge to instance
+  # Get Server settings with merge to instance(attributes[:settings])
   # === Examples
   #   server = Server.index(:filter => "nickname=dev-001").first
   #   Server.settings
+  #   # => Server#attributes[:settings]
+  #   # {:dns_name => "ec2-175-...", :aws_id => "i-12345", ..., :ip_address => "175...."}
   def settings
-    if self.id
-      result = self.class.settings(self.id)
-      self.loads(result) if self.class.status_code == 200 && result
+    # first access
+    if self.attributes[:settings].nil?
+      self.attributes[:settings] = _settings
     end
+
+    self.attributes[:settings]
+  end
+
+  # Get Server settings with merge to instance(destructive)
+  # === Examples
+  #   server = Server.index(:filter => "nickname=dev-001").first
+  #   Server.settings!
+  #   # => self
+  #   #
+  #   # > Server.attributes
+  #   # => [:nickname => "server1", :aws_id => "i-12345", ..., :ip_address => "175..."]
+  def settings!
+    self.loads(_settings)
 
     self
   end
+
+  private
+    def _settings
+      self.class.settings(self.id) rescue nil
+    end
 end

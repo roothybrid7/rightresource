@@ -44,11 +44,33 @@ class ServerArray < RightResource::Base
       RightResource::Formats::XmlFormat.decode(action(:post, path, h)).tap {|resource| correct_attributes(resource)}
     end
 
+    # Get Server Array instances(subresource)
+    # === Examples
+    #   array_id = ServerArray.index.first.id
+    #   instances = ServerArray.instances(array_id)
+    #   => [{:nickname => "web #1", :resource_uid => "i-12345", ...},
+    #      {:nickname => "web #2", :resource_uid => "i-67890", ...}]
     def instances(id)
       path = element_path(id, :instances)
       format.decode(action(:get, path)).map do |instance|
         correct_attributes(instance)
       end
     end
+  end
+
+  # Get Server Array with merge to ServerArray instance(attributes[:instances])
+  # === Examples
+  #   array = ServerArray.index.first
+  #   array.instances
+  #   # => ServerArray#attributes[:instances]
+  #   => [{:nickname => "web #1", :resource_uid => "i-12345", ...},
+  #      {:nickname => "web #2", :resource_uid => "i-67890", ...}]
+  def instances
+    # first access
+    if self.attributes[:instances].nil?
+      self.attributes[:instances] = self.class.instances(self.id) rescue nil
+    end
+
+    self.attributes[:instances]
   end
 end
