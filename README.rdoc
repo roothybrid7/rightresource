@@ -16,9 +16,9 @@ RightScale Resource API wrapper
 == REQUIREMENTS:
 
 * list of requirements
-    json
-    rest-client
-    crack
+    json, '~>1.0'
+    rest-client, '~>1.0'
+    crack, '~>0.1.0'
 
 == INSTALL:
 
